@@ -12,9 +12,16 @@ RunRight6.png
 RunRight7.png
 RunRight8.png
 RunRight9.png
+RunTruck1.png
+RunTruck2.png
+RunTruck3.png
+RunTruck4.png
+RunTruck5.png
+RunTruck6.png
+RunTruck7.png
+RunTruck8.png
 abajur.png
 brinquedos.png
-caminhao.png
 notebook.png
 roupas.png
 standingLeft.png

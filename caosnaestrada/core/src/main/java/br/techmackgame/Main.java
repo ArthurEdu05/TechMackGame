@@ -32,13 +32,12 @@ public class Main implements ApplicationListener {
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
 
-        // Caminhão
-        Texture truckTexture = new Texture("caminhao.png");
-        float truckWidth = 4f;
-        float truckHeight = 2f;
-        float truckX = viewport.getWorldWidth() - truckWidth / 2;
-        float truckY = 1f;
-        truck = new Truck(truckTexture, truckX, truckY, truckWidth, truckHeight);
+    // Caminhão
+    float truckWidth = 4f;
+    float truckHeight = 2f;
+    float truckX = viewport.getWorldWidth() - truckWidth / 2;
+    float truckY = 1f;
+    truck = new Truck(truckX, truckY, truckWidth, truckHeight);
 
         // Objetos aleatórios (cada um é uma imagem separada)
         objectTextures = new Array<>();
