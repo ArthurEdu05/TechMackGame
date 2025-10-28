@@ -23,6 +23,12 @@ public class Main implements ApplicationListener {
     float spawnTimer = 0f;
     float spawnInterval = 3f;
 
+    // Fundo
+    Texture backgroundTexture;
+    float bgX1, bgX2;
+    float bgSpeed = 2f; // velocidade de movimento do fundo
+    float bgWidthUnits;
+
     @Override
     public void create() {
         spriteBatch = new SpriteBatch();
@@ -32,12 +38,12 @@ public class Main implements ApplicationListener {
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
 
-    // Caminhão
-    float truckWidth = 4f;
-    float truckHeight = 2f;
-    float truckX = viewport.getWorldWidth() - truckWidth / 2;
-    float truckY = 1f;
-    truck = new Truck(truckX, truckY, truckWidth, truckHeight);
+        // Caminhão
+        float truckWidth = 4f;
+        float truckHeight = 2f;
+        float truckX = viewport.getWorldWidth() - truckWidth / 2;
+        float truckY = 1f;
+        truck = new Truck(truckX, truckY, truckWidth, truckHeight);
 
         // Objetos aleatórios (cada um é uma imagem separada)
         objectTextures = new Array<>();
@@ -46,6 +52,12 @@ public class Main implements ApplicationListener {
         objectTextures.add(new Texture("notebook.png"));
         objectTextures.add(new Texture("roupas.png"));
         objectTextures.add(new Texture("travesseiro.png"));
+
+        // Fundo
+        backgroundTexture = new Texture("backgroundlvl1.png");
+        bgWidthUnits = 8f; // largura do fundo em unidades do mundo (ajuste se necessário)
+        bgX1 = 0;
+        bgX2 = bgWidthUnits;
     }
 
     @Override
@@ -96,6 +108,20 @@ public class Main implements ApplicationListener {
                 System.out.println("🎯 Player pegou o objeto!");
             }
         }
+
+        //Fundo
+        
+        // Move o fundo
+        bgX1 -= bgSpeed * delta;
+        bgX2 -= bgSpeed * delta;
+
+        // Reposiciona quando sair da tela
+        if (bgX1 + bgWidthUnits < 0) {
+            bgX1 = bgX2 + bgWidthUnits;
+        }
+        if (bgX2 + bgWidthUnits < 0) {
+            bgX2 = bgX1 + bgWidthUnits;
+        }
     }
 
     private void drawGameObjects() {
@@ -104,9 +130,20 @@ public class Main implements ApplicationListener {
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
+
+        // Fundo: desenha primeira cópia normal
+        spriteBatch.draw(backgroundTexture, bgX1, 0, bgWidthUnits, viewport.getWorldHeight());
+
+        // Fundo: desenha segunda cópia invertida horizontalmente
+        spriteBatch.draw(backgroundTexture, bgX2 + bgWidthUnits, 0, -bgWidthUnits, viewport.getWorldHeight());
+
+        // desenha player
         player.draw(spriteBatch);
+
+        // desenha caminhão
         truck.draw(spriteBatch);
         if (fallingObject != null) fallingObject.draw(spriteBatch);
+
         spriteBatch.end();
     }
 
@@ -117,5 +154,6 @@ public class Main implements ApplicationListener {
     public void dispose() {
         spriteBatch.dispose();
         for (Texture t : objectTextures) t.dispose();
+        backgroundTexture.dispose();
     }
 }
