@@ -1,4 +1,11 @@
 .gitkeep
+Run1.png
+Run2.png
+Run3.png
+Run4.png
+Run5.png
+Run6.png
+Run7.png
 RunRight1.png
 RunRight10.png
 RunRight11.png
@@ -21,6 +28,9 @@ RunTruck6.png
 RunTruck7.png
 RunTruck8.png
 abajur.png
+backgroundlvl1.png
+backgroundlvl2.png
+backgroundlvl3.png
 brinquedos.png
 notebook.png
 roupas.png
