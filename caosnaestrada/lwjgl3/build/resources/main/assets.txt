@@ -32,7 +32,10 @@ backgroundlvl1.png
 backgroundlvl2.png
 backgroundlvl3.png
 brinquedos.png
+menuBackground.png
 notebook.png
+playButton.png
+quitButton.png
 roupas.png
 standingLeft.png
 standingRight.png

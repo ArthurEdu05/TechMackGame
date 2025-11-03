@@ -29,10 +29,16 @@ public class Main implements ApplicationListener {
     float bgSpeed = 2f; // velocidade de movimento do fundo
     float bgWidthUnits;
 
+    // Menu
+    Menu menu;
+    boolean gameStarted = false;
+
     @Override
     public void create() {
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
+
+        menu = new Menu();
 
         // Player
         Texture playerTexture = new Texture("standingRight.png");
@@ -68,9 +74,25 @@ public class Main implements ApplicationListener {
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
+        if (!gameStarted) {
+                    // Atualiza menu
+                    menu.update();
 
-        updateGameObjects(delta);
-        drawGameObjects();
+                    ScreenUtils.clear(Color.BLACK);
+                    viewport.apply();
+                    spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+                    spriteBatch.begin();
+                    menu.render();
+                    spriteBatch.end();
+
+                    // Verifica clique em jogar ou sair
+                    if (menu.shouldStartGame()) gameStarted = true;
+                    if (menu.shouldExitGame()) Gdx.app.exit();
+                } else {
+                    // Jogo
+                    updateGameObjects(delta);
+                    drawGameObjects();
+                }
     }
 
     private void updateGameObjects(float delta) {
@@ -155,5 +177,6 @@ public class Main implements ApplicationListener {
         spriteBatch.dispose();
         for (Texture t : objectTextures) t.dispose();
         backgroundTexture.dispose();
+        menu.dispose();
     }
 }
