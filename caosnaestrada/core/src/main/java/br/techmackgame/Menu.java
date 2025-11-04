@@ -80,12 +80,14 @@ public class Menu {
             if (x >= playButton.getX() && x <= playButton.getX() + playButton.getWidth() &&
                 y >= playButton.getY() && y <= playButton.getY() + playButton.getHeight()) {
                 playClicked = true;
+                return;
             }
 
             // Botão Sair
             if (x >= quitButton.getX() && x <= quitButton.getX() + quitButton.getWidth() &&
                 y >= quitButton.getY() && y <= quitButton.getY() + quitButton.getHeight()) {
                 exitClicked = true;
+                return;
             }
 
             // Carrossel - Setas clicáveis
@@ -118,7 +120,13 @@ public class Menu {
     }
 
     public int getSelectedLevel() {
-        return currentLevel + 1;
+        return currentLevel;
+    }
+    
+    public void setSelectedLevel(int level) {
+        if (level < 0 || level > levels.length) return; // Evita erro se número for inválido
+        currentLevel = level;
+        levelLabel.setText("< " + levels[currentLevel] + " >"); // atualiza o texto na tela
     }
 
     public void dispose() {
