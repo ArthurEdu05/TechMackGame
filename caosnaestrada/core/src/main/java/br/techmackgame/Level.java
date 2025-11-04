@@ -27,12 +27,19 @@ public abstract class Level {
 
     protected boolean levelComplete = false;
 
+    protected boolean playerStartedMoving = false;
+    private float playerStartX; // posição inicial do player
+
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
         this.viewport = viewport;
         this.spriteBatch = spriteBatch;
 
         setupObjects();
         setupBackground();
+
+        if (player != null) {
+            playerStartX = player.getX();
+        }
     }
 
     protected abstract void setupBackground();
@@ -42,7 +49,14 @@ public abstract class Level {
         player.update(delta);
         truck.update(delta);
 
-        // Impede o player de entrar no caminhão
+        // verifica se player andou
+        if (!playerStartedMoving && player != null) {
+            if (player.getX() != playerStartX) {
+                playerStartedMoving = true;
+            }
+        }
+
+        // impede o player de entrar no caminhão
         if (player.getBounds().overlaps(truck.getBounds())) {
             if (player.getX() < truck.getX()) {
                 player.setPosition(truck.getX() - player.getWidth(), player.getY());
@@ -51,7 +65,7 @@ public abstract class Level {
             }
         }
 
-        // Controle de spawn
+        // controle de spawn
         spawnTimer += delta;
         if ((fallingObject == null || !fallingObject.isActive()) && spawnTimer > spawnInterval) {
             spawnTimer = 0f;
@@ -71,11 +85,13 @@ public abstract class Level {
             }
         }
 
-        // Fundo rolando
-        bgX1 -= bgSpeed * delta;
-        bgX2 -= bgSpeed * delta;
-        if (bgX1 + bgWidthUnits < 0) bgX1 = bgX2 + bgWidthUnits;
-        if (bgX2 + bgWidthUnits < 0) bgX2 = bgX1 + bgWidthUnits;
+        // fundo só move se player andou
+        if (playerStartedMoving) {
+            bgX1 -= bgSpeed * delta;
+            bgX2 -= bgSpeed * delta;
+            if (bgX1 + bgWidthUnits < 0) bgX1 = bgX2 + bgWidthUnits;
+            if (bgX2 + bgWidthUnits < 0) bgX2 = bgX1 + bgWidthUnits;
+        }
     }
 
     public void render() {
