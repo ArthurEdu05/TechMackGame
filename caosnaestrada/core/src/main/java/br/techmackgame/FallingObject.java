@@ -25,7 +25,7 @@ public class FallingObject extends GameObject {
         active = true;
 
         // Arco aleatório (horizontal e vertical)
-        velocityX = MathUtils.random(-2f, -4f); // indo para a esquerda
+        velocityX = MathUtils.random(-4f, -1f); // indo para a esquerda
         velocityY = MathUtils.random(2.5f, 4f); // altura inicial do pulo
 
         // Gira em sentido horário ou anti-horário aleatoriamente

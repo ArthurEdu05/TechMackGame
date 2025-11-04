@@ -37,7 +37,7 @@ public class Player extends GameObject{
     private final float pedalDecay = 3f;
     
     // velocidade fixa do jogador 
-    private final float moveSpeed = 3f;
+    private final float moveSpeed = 4f;
 
     // variaveis de energia pra poder se mexer
 

@@ -23,8 +23,6 @@ public abstract class Level {
     protected float bgSpeed = 2f;
 
     protected float spawnTimer = 0f;
-    protected float spawnInterval = 3f;
-
     protected boolean levelComplete = false;
 
     protected boolean playerStartedMoving = false;
@@ -41,6 +39,9 @@ public abstract class Level {
             playerStartX = player.getX();
         }
     }
+
+    // Cada Level define seu spawn interval
+    protected abstract float getSpawnInterval(); 
 
     protected abstract void setupBackground();
     protected abstract void setupObjects();
@@ -67,9 +68,8 @@ public abstract class Level {
 
         // controle de spawn
         spawnTimer += delta;
-        if ((fallingObject == null || !fallingObject.isActive()) && spawnTimer > spawnInterval) {
+        if ((fallingObject == null || !fallingObject.isActive()) && spawnTimer > getSpawnInterval()) {
             spawnTimer = 0f;
-            spawnInterval = MathUtils.random(2f, 5f);
 
             Texture randomTexture = objectTextures.random();
             float startX = truck.getX();

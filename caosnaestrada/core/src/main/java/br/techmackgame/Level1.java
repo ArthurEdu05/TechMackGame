@@ -10,7 +10,11 @@ public class Level1 extends Level {
     public Level1(FitViewport viewport, SpriteBatch spriteBatch) {
         super(viewport, spriteBatch);
         this.bgSpeed = 2f;         // Velocidade do fundo
-        this.spawnInterval = 3f;   // Intervalo inicial de spawn
+    }
+
+    @Override
+    protected float getSpawnInterval() {
+        return 4f;
     }
 
     @Override

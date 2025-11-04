@@ -40,8 +40,10 @@ public class Level3 extends Level {
         objectTextures.add(new Texture("notebook.png"));
         objectTextures.add(new Texture("roupas.png"));
         objectTextures.add(new Texture("travesseiro.png"));
+    }
 
-        // Configura spawn mais rápido
-        spawnInterval = 0.005f;
+    @Override
+    protected float getSpawnInterval() {
+        return 0.1f; // spawn frenético
     }
 }
