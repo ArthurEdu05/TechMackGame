@@ -233,6 +233,9 @@ public class Main implements ApplicationListener {
                     case 1:
                         currentLevel = new Level2(viewport, spriteBatch);
                         break;
+                    case 2:
+                        currentLevel = new Level3(viewport, spriteBatch);
+                        break;
                     default:
                         currentLevel = new Level1(viewport, spriteBatch);
                         break;
@@ -269,6 +272,9 @@ public class Main implements ApplicationListener {
                             break;
                         case 1:
                             currentLevel = new Level2(viewport, spriteBatch);
+                            break;
+                         case 2:
+                            currentLevel = new Level3(viewport, spriteBatch);
                             break;
                         default:
                             currentLevel = new Level1(viewport, spriteBatch);
