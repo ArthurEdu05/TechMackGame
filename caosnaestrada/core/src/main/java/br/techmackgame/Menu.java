@@ -49,13 +49,13 @@ public class Menu {
 
         // Botões
         playButton = new Image(playTexture);
-        playButton.setSize(200, 70);
+        playButton.setSize(200, 60);
         playButton.setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 10);
         stage.addActor(playButton);
 
         quitButton = new Image(quitTexture);
-        quitButton.setSize(200, 70);
-        quitButton.setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 100);
+        quitButton.setSize(200, 60);
+        quitButton.setPosition(Gdx.graphics.getWidth() / 2 - 90, Gdx.graphics.getHeight() / 2 - 100);
         stage.addActor(quitButton);
 
         // Fonte
