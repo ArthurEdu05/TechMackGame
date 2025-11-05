@@ -32,10 +32,13 @@ backgroundlvl1.png
 backgroundlvl2.png
 backgroundlvl3.png
 brinquedos.png
+cancelButton.png
 menuBackground.png
 notebook.png
 playButton.png
 quitButton.png
+quitConfirmButton.png
+quitConfirmation.png
 roupas.png
 standingLeft.png
 standingRight.png
