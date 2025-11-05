@@ -106,7 +106,7 @@ public class Energy {
         return pedalPower;
     }
 
-    public void addEnergy(float amount) {
-        energy = Math.min(maxEnergy, energy + amount);
-    }
+    // public void addEnergy(float amount) {
+    //     energy = Math.min(maxEnergy, energy + amount);
+    // }
 }

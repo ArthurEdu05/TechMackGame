@@ -30,8 +30,12 @@ public class Level1 extends Level {
         // Player
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
+       
     // energia para este nível: base e máximo
-    energy = new Energy(20f, 100f);
+    // Começa com 50% do máximo (usuário pediu iniciar em 50%)
+    float maxEnergy = 100f;
+    float baseEnergy = maxEnergy * 0.5f; // 50%
+    energy = new Energy(baseEnergy, maxEnergy);
 
         // Caminhão
         float truckWidth = 4f;
@@ -40,7 +44,7 @@ public class Level1 extends Level {
         float truckY = 1f;
         truck = new Truck(truckX, truckY, truckWidth, truckHeight);
 
-        // Objetos que caem (iguais aos da sua Main)
+        // Objetos que caem 
         objectTextures = new Array<>();
         objectTextures.add(new Texture("abajur.png"));
         objectTextures.add(new Texture("brinquedos.png"));

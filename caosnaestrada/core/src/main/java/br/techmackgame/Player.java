@@ -10,7 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-//Essa classe representa a nave. Ela herda de GameObject e implementa a lógica de movimento do jogador, lendo as entradas do teclado.
+/// Essa classe representa a nave. 
+/// Ela herda de GameObject e implementa a lógica de movimento do jogador, lendo as entradas do teclado.
+
 public class Player extends GameObject{
     private Vector2 touchPos;
     private Viewport viewport;
