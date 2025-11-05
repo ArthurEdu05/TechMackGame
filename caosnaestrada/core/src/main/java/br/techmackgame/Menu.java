@@ -55,7 +55,7 @@ public class Menu {
 
         quitButton = new Image(quitTexture);
         quitButton.setSize(200, 60);
-        quitButton.setPosition(Gdx.graphics.getWidth() / 2 - 90, Gdx.graphics.getHeight() / 2 - 100);
+        quitButton.setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 90);
         stage.addActor(quitButton);
 
         // Fonte
