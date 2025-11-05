@@ -16,6 +16,8 @@ public abstract class Level {
     protected Truck truck;
     protected FallingObject fallingObject;
     protected Array<Texture> objectTextures;
+    // energia do jogador para este nível
+    protected Energy energy;
 
     protected Texture backgroundTexture;
     protected float bgX1, bgX2;
@@ -47,7 +49,9 @@ public abstract class Level {
     protected abstract void setupObjects();
 
     public void update(float delta) {
-        player.update(delta);
+    player.update(delta);
+    // Atualiza energia se existir
+    if (energy != null) energy.update(delta);
         truck.update(delta);
 
         // verifica se player andou

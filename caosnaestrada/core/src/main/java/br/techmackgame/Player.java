@@ -29,12 +29,8 @@ public class Player extends GameObject{
     // controles de pedal
     private TextureRegion standingRegion;
     private TextureRegion standingLeftRegion;
-    private int lastPedal = 0; // 1 = LEFT, 2 = RIGHT
     private int facing = 1; // 1 = right, -1 = left (começa direita right)
-    private float pedalPower = 0f;
-    private final float pedalInc = 2f;
-    private final float pedalMax = 6f;
-    private final float pedalDecay = 3f;
+
     
     // velocidade fixa do jogador 
     private final float moveSpeed = 4f;
@@ -114,51 +110,6 @@ public class Player extends GameObject{
             }
             objectSprite.setSize(originalWidth, originalHeight);
         }
-
-        // ---- Movimento teclado do pedal
-        //   // pressione LEFT/RIGHT alternadamente para aumentar a velovidade do pedal
-            // boolean leftJust = Gdx.input.isKeyJustPressed(Input.Keys.LEFT);
-            // boolean rightJust = Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
-
-            // if (leftJust || rightJust) {
-            //     if (leftJust) {
-            //         // duplo LEFT inverte a direção
-            //         if (lastPedal == 1) {
-            //             facing *= -1;
-            //             lastPedal = 0;
-            //         } else {
-            //             pedalPower = Math.min(pedalMax, pedalPower + pedalInc);
-            //             lastPedal = 1;
-            //         }
-            //     } else {
-            //         if (lastPedal == 2) {
-            //             // duplo RIGHT inverte a direção
-            //             facing *= -1;
-            //             lastPedal = 0;
-            //         } else {
-            //             pedalPower = Math.min(pedalMax, pedalPower + pedalInc);
-            //             lastPedal = 2;
-            //         }
-            //     }
-            // }
-
-            // // aplica movimento com base no pedal
-            // if (pedalPower > 0f) {
-            //     // velocidade fixa quando o pedal tem alguma movimentação
-            //     objectSprite.translateX(facing * moveSpeed * delta);
-            //     stateTime += delta;
-            //     frameAtual = (facing > 0) ? runAnimationRight.getKeyFrame(stateTime, true) : runAnimationLeft.getKeyFrame(stateTime, true);
-            //     objectSprite.setRegion(frameAtual);
-            //     objectSprite.setSize(originalWidth, originalHeight);
-            // } else {
-            //     // parado
-            //     stateTime = 0f;
-            //     objectSprite.setRegion(standingRegion);
-            //     objectSprite.setSize(originalWidth, originalHeight);
-            // }
-
-            // // decaimento da potência do pedal
-            // pedalPower = Math.max(0f, pedalPower - pedalDecay * delta);
 
             // Garante que o jogador não saia da tela
             objectSprite.setX(MathUtils.clamp(objectSprite.getX(), 0, worldWidth - playerWidth));

@@ -30,6 +30,8 @@ public class Level1 extends Level {
         // Player
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
+    // energia para este nível: base e máximo
+    energy = new Energy(20f, 100f);
 
         // Caminhão
         float truckWidth = 4f;
