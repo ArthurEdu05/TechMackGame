@@ -28,10 +28,10 @@ public class Energy {
     private final float pedalDecay = 2.5f;    
 
     // valor convertido em energia por segundo
-    private final float energyGainPerPower = 0.6f;
+    private final float energyGainPerPower = 0.4f;
 
     // decaimento da energia por segundo 
-    private final float passiveDecayRate = 0.3f;
+    private final float passiveDecayRate = 0.7f;
 
     public Energy(float baseEnergy, float maxEnergy) {
         this.baseEnergy = baseEnergy;

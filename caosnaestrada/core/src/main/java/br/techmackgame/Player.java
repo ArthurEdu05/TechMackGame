@@ -39,6 +39,8 @@ public class Player extends GameObject{
 
     // variaveis de energia pra poder se mexer
 
+    // referência à energia (injetada pelo Level)
+    protected Energy energy;
 
     public Player(Texture texture, float x, float y, float width, float height, Viewport viewport) {
         super(texture, x, y, width, height);
@@ -58,10 +60,12 @@ public class Player extends GameObject{
         // frames de corrida (direita) 
         runRightTextures = new Texture[6];
         TextureRegion[] rightRegions = new TextureRegion[6];
+        
         for (int i = 0; i < 6; i++){
             runRightTextures[i] = new Texture("Run" + (i+1) + ".png");
             rightRegions[i] = new TextureRegion(runRightTextures[i]);
         }
+        
         runAnimationRight = new Animation<>(0.1f, rightRegions);
         frameAtual = runAnimationRight.getKeyFrame(stateTime, true);
         objectSprite.setRegion(frameAtual);
@@ -69,10 +73,12 @@ public class Player extends GameObject{
 
         // animação da esquerda espelhando as da direita
         TextureRegion[] leftRegions = new TextureRegion[6];
+       
         for (int i = 0; i < 6; i++){
             leftRegions[i] = new TextureRegion(rightRegions[i]);
             leftRegions[i].flip(true, false);
         }
+
         runAnimationLeft = new Animation<>(0.1f, leftRegions);
         frameAtual = runAnimationRight.getKeyFrame(stateTime, true);
         objectSprite.setRegion(frameAtual);
@@ -86,7 +92,11 @@ public class Player extends GameObject{
         float playerWidth = objectSprite.getWidth();
         float playerHeight = objectSprite.getHeight();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){ 
+        // Se a energia estiver presente e for zero (ou menor), bloqueia movimento
+        float currentEnergy = (energy != null) ? energy.getEnergy() : Float.MAX_VALUE;
+
+        if (currentEnergy > 0f) {
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             // correr direita
             objectSprite.translateX(moveSpeed * delta);
             stateTime += delta;
@@ -102,7 +112,7 @@ public class Player extends GameObject{
             objectSprite.setRegion(frameAtual);
             objectSprite.setSize(originalWidth, originalHeight);
             facing = -1;
-        } else {
+            } else {
             // parado dependendo da direção
             stateTime = 0f;
             if (facing >= 0) {
@@ -112,11 +122,24 @@ public class Player extends GameObject{
             }
             objectSprite.setSize(originalWidth, originalHeight);
         }
+        } else {
+            // Sem energia: mantém o jogador parado, mas ainda garante que ele fique dentro da tela
+            stateTime = 0f;
+            if (facing >= 0) {
+                objectSprite.setRegion(standingRegion);
+            } else {
+                objectSprite.setRegion(standingLeftRegion);
+            }
+            objectSprite.setSize(originalWidth, originalHeight);
+        }
 
-            // Garante que o jogador não saia da tela
-            objectSprite.setX(MathUtils.clamp(objectSprite.getX(), 0, worldWidth - playerWidth));
-            objectSprite.setY(MathUtils.clamp(objectSprite.getY(), 0, worldHeight - playerHeight));
+        // Garante que o jogador não saia da tela (aplica sempre)
+        objectSprite.setX(MathUtils.clamp(objectSprite.getX(), 0, worldWidth - playerWidth));
+        objectSprite.setY(MathUtils.clamp(objectSprite.getY(), 0, worldHeight - playerHeight));
     }
     
+    public void setEnergy(Energy energy) {
+        this.energy = energy;
+    }
 }
 

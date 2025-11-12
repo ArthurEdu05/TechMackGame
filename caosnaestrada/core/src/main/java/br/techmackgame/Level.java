@@ -71,17 +71,18 @@ public abstract class Level {
     protected abstract void setupObjects();
 
     public void update(float delta) {
-    player.update(delta);
-    // Atualiza energia se existir
-    if (energy != null) energy.update(delta);
-    // Atualiza texto da UI com porcentagem (sem usar GlyphLayout)
-    if (energy != null && energyLabel != null) {
-        float percent = (energy.getEnergy() / energy.getMaxEnergy()) * 100f;
-        energyLabel.setText(String.format("Energia: %.0f%%", percent));
-    }
-    // atualiza estágio da UI
-    if (uiStage != null) uiStage.act(delta);
-        truck.update(delta);
+        
+        if (energy != null) energy.update(delta);
+        if (player != null) player.update(delta);
+
+        // Atualiza texto da UI com porcentagem 
+        if (energy != null && energyLabel != null) {
+            float percent = (energy.getEnergy() / energy.getMaxEnergy()) * 100f;
+            energyLabel.setText(String.format("Energia: %.0f%%", percent));
+        }
+        // atualiza estágio da UI
+        if (uiStage != null) uiStage.act(delta);
+            truck.update(delta);
 
         // verifica se player andou
         if (!playerStartedMoving && player != null) {
