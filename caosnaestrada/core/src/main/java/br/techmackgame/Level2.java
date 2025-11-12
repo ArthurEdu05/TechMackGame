@@ -48,4 +48,9 @@ public class Level2 extends Level {
     protected float getSpawnInterval() {
         return 2f; // spawn mais rapido
     }
+
+    @Override
+    protected String getIntroText() {
+        return "Estamos chegando na cidade, mas seus pertences não param de cair! Não pare de recolher seus pertences e mantenha sua energia!";
+    }
 }

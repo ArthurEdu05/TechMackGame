@@ -53,4 +53,9 @@ public class Level1 extends Level {
         objectTextures.add(new Texture("roupas.png"));
         objectTextures.add(new Texture("travesseiro.png"));
     }
+
+    @Override
+    protected String getIntroText() {
+        return "Seu caminhão de mudança está partindo, mas a porta traseira se abriu no meio da estrada! Recolha seus pertences e mantenha sua energia!";
+    }
 }

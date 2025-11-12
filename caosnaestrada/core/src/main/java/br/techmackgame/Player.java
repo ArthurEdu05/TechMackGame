@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-/// Essa classe representa a nave. 
+/// Essa classe representa o jogador.
 /// Ela herda de GameObject e implementa a lógica de movimento do jogador, lendo as entradas do teclado.
 
 public class Player extends GameObject{
@@ -133,13 +133,23 @@ public class Player extends GameObject{
             objectSprite.setSize(originalWidth, originalHeight);
         }
 
-        // Garante que o jogador não saia da tela (aplica sempre)
+        // Garante que o jogador não saia da tela
         objectSprite.setX(MathUtils.clamp(objectSprite.getX(), 0, worldWidth - playerWidth));
         objectSprite.setY(MathUtils.clamp(objectSprite.getY(), 0, worldHeight - playerHeight));
     }
     
     public void setEnergy(Energy energy) {
         this.energy = energy;
+    }
+
+    public void setStanding() {
+        stateTime = 0f;
+        if (facing >= 0) {
+            objectSprite.setRegion(standingRegion);
+        } else {
+            objectSprite.setRegion(standingLeftRegion);
+        }
+        objectSprite.setSize(originalWidth, originalHeight);
     }
 }
 
