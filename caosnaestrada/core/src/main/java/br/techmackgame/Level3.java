@@ -48,4 +48,9 @@ public class Level3 extends Level {
     protected float getSpawnInterval() {
         return 0.1f; // spawn frenético
     }
+
+    @Override
+    protected String getIntroText() {
+        return "Chegamos na cidade, e os pertences continuam ainda caindo! Continue recolhendo seus pertences e mantenha sua energia!";
+    }
 }
