@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 // ...existing code...
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -52,7 +53,9 @@ public abstract class Level {
     protected boolean allowPlayerMovement = false;
     protected String introText;
 
+    // efeitos sonoros
     protected Array<Sound> objectSounds;
+    protected Music truckSound;
 
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
@@ -95,6 +98,11 @@ public abstract class Level {
 
         setupObjects();
         setupBackground();
+
+        // som caminhao (loop)
+        truckSound = Gdx.audio.newMusic(Gdx.files.internal("truckSound.mp3"));
+        truckSound.setLooping(true);
+        truckSound.setVolume(0.25f); // volume inicial
 
         objectSounds = new Array<>();
         objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound.mp3")));
@@ -212,6 +220,10 @@ public abstract class Level {
             if (bgX1 + bgWidthUnits < 0) bgX1 = bgX2 + bgWidthUnits;
             if (bgX2 + bgWidthUnits < 0) bgX2 = bgX1 + bgWidthUnits;
         }
+
+        if (playerStartedMoving && !truckSound.isPlaying()) {
+            truckSound.play();
+        }
     }
 
     public void render() {
@@ -246,6 +258,10 @@ public abstract class Level {
 
     public void setLevelComplete(boolean complete) {
         this.levelComplete = complete;
+
+        if (levelComplete && truckSound.isPlaying()) {
+            truckSound.stop();
+        }
     }
 
     public void dispose() {
