@@ -40,9 +40,7 @@ public abstract class Level {
     protected BitmapFont font;
     protected Stage uiStage;
     protected Label energyLabel;
-    //⭐
     protected Label scoreLabel;
-    //⭐
     protected int score = 0; 
 
     // intro e contagem
@@ -60,6 +58,10 @@ public abstract class Level {
     protected Music truckSound;
     protected Sound impactSound;
 
+    protected int lastCount = -1;
+    protected Sound countSound;
+    protected Sound goSound;
+
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
         this.viewport = viewport;
@@ -75,11 +77,9 @@ public abstract class Level {
         energyLabel.setPosition(10, Gdx.graphics.getHeight() - 30); // canto superior esquerdo
         uiStage.addActor(energyLabel);
 
-    //⭐
-    scoreLabel = new Label("Pontuação: 0", style);
-    scoreLabel.setPosition(10, Gdx.graphics.getHeight() - 55); // um pouco abaixo da energia
-    uiStage.addActor(scoreLabel);
-    //⭐
+        scoreLabel = new Label("Pontuação: 0", style);
+        scoreLabel.setPosition(10, Gdx.graphics.getHeight() - 55); // um pouco abaixo da energia
+        uiStage.addActor(scoreLabel);
 
         // intro texto
         introText = getIntroText();
@@ -123,6 +123,10 @@ public abstract class Level {
 
         impactSound = Gdx.audio.newSound(Gdx.files.internal("fellSound1.mp3"));
 
+        countSound = Gdx.audio.newSound(Gdx.files.internal("countSound.mp3"));
+        goSound = Gdx.audio.newSound(Gdx.files.internal("goSound.mp3"));
+
+
         if (player != null) {
             playerStartX = player.getX();
         }
@@ -153,12 +157,20 @@ public abstract class Level {
         if (showingCountdown) {
             countdownTimer -= delta;
             int count = (int)Math.ceil(countdownTimer);
-            countdownLabel.setText(String.valueOf(count));
 
-            if (countdownTimer <= 0f) {
-                showingCountdown = false;
-                countdownLabel.setVisible(false);
-                allowPlayerMovement = true; // agora o player pode se mover
+            // toca som apenas quando o número mudar
+            if (count != lastCount) {
+                lastCount = count;
+                countdownLabel.setText(String.valueOf(count));
+
+                if (count == 3 || count == 2 || count == 1) {
+                    countSound.play(0.7f);
+                } else if (count == 0) {
+                    goSound.play(0.8f);
+                    countdownLabel.setVisible(false);
+                    showingCountdown = false;
+                    allowPlayerMovement = true;
+                }
             }
         }
         
@@ -225,7 +237,6 @@ public abstract class Level {
             }
         }
 
-        //⭐
         if (fallingObject != null && fallingObject.isCollected()) {
         // define pontos conforme o tipo do objeto
         Texture texture = fallingObject.getTexture();
@@ -240,13 +251,11 @@ public abstract class Level {
         score += fallingObject.getPoints();
         scoreLabel.setText("Pontuação: " + score);
 
-        System.out.println("🎯 Pontos ganhos: " + fallingObject.getPoints() + " | Total: " + score);
+        System.out.println("Pontos ganhos: " + fallingObject.getPoints() + " | Total: " + score);
 
         // desativa o objeto após contabilizar
         fallingObject.deactivate();
         }
-        //⭐
-
 
         // fundo só move se player andou
         if (playerStartedMoving) {
@@ -307,5 +316,7 @@ public abstract class Level {
         if (objectSounds != null) {
             for (Sound s : objectSounds) s.dispose();
         }
+        countSound.dispose();
+        goSound.dispose();
     }
 }
