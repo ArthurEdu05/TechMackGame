@@ -42,6 +42,9 @@ fallingSound5.mp3
 fallingSound6.mp3
 fellSound1.mp3
 goSound.mp3
+intro1Sound.mp3
+intro2Sound.mp3
+intro3Sound.mp3
 menuBackground.png
 notebook.png
 playButton.png
