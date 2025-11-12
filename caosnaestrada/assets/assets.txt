@@ -39,7 +39,7 @@ fallingSound3.mp3
 fallingSound4.mp3
 fallingSound5.mp3
 fallingSound6.mp3
-fellSound.mp3
+fellSound1.mp3
 menuBackground.png
 notebook.png
 playButton.png
