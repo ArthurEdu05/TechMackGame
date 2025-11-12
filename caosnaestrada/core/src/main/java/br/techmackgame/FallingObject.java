@@ -1,3 +1,4 @@
+
 package br.techmackgame;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +14,11 @@ public class FallingObject extends GameObject {
     private float groundY = 1f; // altura do chão 
     private float rotationSpeed; // velocidade de rotação 
 
+    // ⭐ Controle de pontuação e coleta
+    private int points; 
+    private boolean collected = false; 
+    // ⭐
+
     public FallingObject(Texture texture, float startX, float startY, float width, float height) {
         super(texture, startX, startY, width, height);
         reset(startX, startY);
@@ -23,9 +29,12 @@ public class FallingObject extends GameObject {
         objectSprite.setPosition(startX, startY);
         bounds.setPosition(startX, startY);
         active = true;
+        // ⭐
+        collected = false;
+        // ⭐
 
-        // Arco 
-        velocityX = MathUtils.random(-4f, -1f); //  horizontal para a esquerda
+        // Arco aleatório
+        velocityX = MathUtils.random(-4f, -1f); // horizontal para a esquerda
         velocityY = MathUtils.random(2.5f, 4f); // vertical para cima
 
         // Gira em sentido horário ou anti-horário aleatoriamente
@@ -60,6 +69,32 @@ public class FallingObject extends GameObject {
     }
 
     public void collect() {
+        // Marca como coletado e desativa o objeto
         active = false;
+        collected = true;
     }
+
+    // ⭐
+
+    public boolean isCollected() {
+        return collected;
+    }
+
+    public void deactivate() {
+        active = false;
+        collected = false;
+    }
+
+    public Texture getTexture() {
+        return objectSprite.getTexture();
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+    // ⭐
 }

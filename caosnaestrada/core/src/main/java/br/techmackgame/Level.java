@@ -1,17 +1,16 @@
+
 package br.techmackgame;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-// ...existing code...
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-// ...existing code...
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public abstract class Level {
     protected FitViewport viewport;
@@ -39,6 +38,9 @@ public abstract class Level {
     protected BitmapFont font;
     protected Stage uiStage;
     protected Label energyLabel;
+    //⭐
+    protected Label scoreLabel;
+    //⭐
     protected int score = 0; 
 
     
@@ -55,6 +57,12 @@ public abstract class Level {
     energyLabel = new Label("Energia: 0%", style);
     energyLabel.setPosition(10, Gdx.graphics.getHeight() - 30); // canto superior esquerdo
     uiStage.addActor(energyLabel);
+
+    //⭐
+    scoreLabel = new Label("Pontuação: 0", style);
+    scoreLabel.setPosition(10, Gdx.graphics.getHeight() - 55); // um pouco abaixo da energia
+    uiStage.addActor(scoreLabel);
+    //⭐
 
         setupObjects();
         setupBackground();
@@ -118,6 +126,29 @@ public abstract class Level {
                 fallingObject.collect();
             }
         }
+
+        //⭐
+        if (fallingObject != null && fallingObject.isCollected()) {
+        // define pontos conforme o tipo do objeto
+        Texture texture = fallingObject.getTexture();
+        if (texture.toString().contains("abajur")) fallingObject.setPoints(1);
+        else if (texture.toString().contains("brinquedos")) fallingObject.setPoints(2);
+        else if (texture.toString().contains("notebook")) fallingObject.setPoints(3);
+        else if (texture.toString().contains("roupas")) fallingObject.setPoints(4);
+        else if (texture.toString().contains("travesseiro")) fallingObject.setPoints(5);
+        else fallingObject.setPoints(1);
+
+        // soma os pontos
+        score += fallingObject.getPoints();
+        scoreLabel.setText("Pontuação: " + score);
+
+        System.out.println("🎯 Pontos ganhos: " + fallingObject.getPoints() + " | Total: " + score);
+
+        // desativa o objeto após contabilizar
+        fallingObject.deactivate();
+        }
+        //⭐
+
 
         // fundo só move se player andou
         if (playerStartedMoving) {
