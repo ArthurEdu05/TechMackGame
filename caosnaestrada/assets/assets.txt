@@ -33,6 +33,13 @@ backgroundlvl2.png
 backgroundlvl3.png
 brinquedos.png
 cancelButton.png
+fallingSound.mp3
+fallingSound2.mp3
+fallingSound3.mp3
+fallingSound4.mp3
+fallingSound5.mp3
+fallingSound6.mp3
+fellSound.mp3
 menuBackground.png
 notebook.png
 playButton.png
@@ -43,3 +50,4 @@ roupas.png
 standingLeft.png
 standingRight.png
 travesseiro.png
+truckSound.mp3

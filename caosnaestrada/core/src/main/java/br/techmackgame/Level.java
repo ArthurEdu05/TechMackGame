@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 // ...existing code...
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 // ...existing code...
@@ -51,6 +52,8 @@ public abstract class Level {
     protected boolean allowPlayerMovement = false;
     protected String introText;
 
+    protected Array<Sound> objectSounds;
+
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
         this.viewport = viewport;
@@ -92,6 +95,14 @@ public abstract class Level {
 
         setupObjects();
         setupBackground();
+
+        objectSounds = new Array<>();
+        objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound.mp3")));
+        objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound2.mp3")));
+        objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound3.mp3")));
+        objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound4.mp3")));
+        objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound5.mp3")));
+        objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound6.mp3")));
 
         if (player != null) {
             playerStartX = player.getX();
@@ -176,6 +187,15 @@ public abstract class Level {
             float startY = truck.getY() + truck.getHeight();
 
             fallingObject = new FallingObject(randomTexture, startX, startY, 0.5f, 0.5f);
+            if (objectSounds != null && objectSounds.size > 0) {
+                Sound randomSound = objectSounds.random();
+
+                // gera volume e pitch
+                float volume = 0.4f;
+                float pitch = 0.9f + (float)Math.random() * 0.2f;
+
+                randomSound.play(volume, pitch, 0f);
+            }
         }
 
         if (fallingObject != null) {
@@ -231,7 +251,10 @@ public abstract class Level {
     public void dispose() {
         for (Texture t : objectTextures) t.dispose();
         backgroundTexture.dispose();
-    if (font != null) font.dispose();
-    if (uiStage != null) uiStage.dispose();
+        if (font != null) font.dispose();
+        if (uiStage != null) uiStage.dispose();
+        if (objectSounds != null) {
+            for (Sound s : objectSounds) s.dispose();
+        }
     }
 }
