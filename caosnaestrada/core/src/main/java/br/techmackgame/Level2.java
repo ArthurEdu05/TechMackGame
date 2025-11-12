@@ -1,5 +1,7 @@
 package br.techmackgame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -52,5 +54,10 @@ public class Level2 extends Level {
     @Override
     protected String getIntroText() {
         return "Estamos chegando na cidade, mas seus pertences não param de cair! Não pare de recolher seus pertences e mantenha sua energia!";
+    }
+
+    @Override
+    public Music getIntroSound() {
+        return Gdx.audio.newMusic(Gdx.files.internal("intro2Sound.mp3"));
     }
 }

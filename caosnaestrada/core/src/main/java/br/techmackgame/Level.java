@@ -62,6 +62,8 @@ public abstract class Level {
     protected Sound countSound;
     protected Sound goSound;
 
+    protected Music introSound;
+
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
         this.viewport = viewport;
@@ -86,7 +88,7 @@ public abstract class Level {
         Label.LabelStyle introStyle = new Label.LabelStyle(font, Color.WHITE);
         introLabel = new Label(introText, introStyle);
         introLabel.setWrap(true);
-        introLabel.setWidth(Gdx.graphics.getWidth() * 0.8f); // 80% da tela
+        introLabel.setWidth(Gdx.graphics.getWidth() * 0.6f); // 80% da tela
         introLabel.setFontScale(1f);
         introLabel.setPosition(
             (Gdx.graphics.getWidth() - introLabel.getWidth()) / 2f,
@@ -126,11 +128,18 @@ public abstract class Level {
         countSound = Gdx.audio.newSound(Gdx.files.internal("countSound.mp3"));
         goSound = Gdx.audio.newSound(Gdx.files.internal("goSound.mp3"));
 
+        introSound = getIntroSound();
+        introSound.setLooping(false);  // mantém tocando até o jogo começar
+        introSound.setVolume(0.6f);   // volume ajustável
+        introSound.play();            // toca assim que entra na intro
+
 
         if (player != null) {
             playerStartX = player.getX();
         }
     }
+
+    protected abstract Music getIntroSound();
 
     protected abstract String getIntroText();
 
@@ -266,6 +275,7 @@ public abstract class Level {
         }
 
         if (playerStartedMoving && !truckSound.isPlaying()) {
+            introSound.stop();
             truckSound.play();
         }
     }
@@ -318,5 +328,7 @@ public abstract class Level {
         }
         countSound.dispose();
         goSound.dispose();
+        introSound.dispose();
+        truckSound.dispose();
     }
 }
