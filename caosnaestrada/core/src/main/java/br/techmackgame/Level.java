@@ -2,11 +2,16 @@ package br.techmackgame;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
+// ...existing code...
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+// ...existing code...
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public abstract class Level {
     protected FitViewport viewport;
@@ -16,6 +21,8 @@ public abstract class Level {
     protected Truck truck;
     protected FallingObject fallingObject;
     protected Array<Texture> objectTextures;
+    // energia do jogador para este nível
+    protected Energy energy;
 
     protected Texture backgroundTexture;
     protected float bgX1, bgX2;
@@ -27,10 +34,27 @@ public abstract class Level {
 
     protected boolean playerStartedMoving = false;
     private float playerStartX; // posição inicial do player
+     
+    // Elementos de UI
+    protected BitmapFont font;
+    protected Stage uiStage;
+    protected Label energyLabel;
+    protected int score = 0; 
 
+    
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
         this.viewport = viewport;
         this.spriteBatch = spriteBatch;
+
+    // inicializa e UI 
+    font = new BitmapFont();
+    font.getData().setScale(1f);
+    Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
+
+    uiStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+    energyLabel = new Label("Energia: 0%", style);
+    energyLabel.setPosition(10, Gdx.graphics.getHeight() - 30); // canto superior esquerdo
+    uiStage.addActor(energyLabel);
 
         setupObjects();
         setupBackground();
@@ -47,8 +71,18 @@ public abstract class Level {
     protected abstract void setupObjects();
 
     public void update(float delta) {
-        player.update(delta);
-        truck.update(delta);
+        
+        if (energy != null) energy.update(delta);
+        if (player != null) player.update(delta);
+
+        // Atualiza texto da UI com porcentagem 
+        if (energy != null && energyLabel != null) {
+            float percent = (energy.getEnergy() / energy.getMaxEnergy()) * 100f;
+            energyLabel.setText(String.format("Energia: %.0f%%", percent));
+        }
+        // atualiza estágio da UI
+        if (uiStage != null) uiStage.act(delta);
+            truck.update(delta);
 
         // verifica se player andou
         if (!playerStartedMoving && player != null) {
@@ -108,6 +142,15 @@ public abstract class Level {
         truck.draw(spriteBatch);
         if (fallingObject != null) fallingObject.draw(spriteBatch);
 
+        // Desenha UI Stage (labels)
+        if (uiStage != null) {
+            // uiStage usa coordenadas de pixels; desenha por cima do spriteBatch
+            spriteBatch.end();
+            uiStage.getViewport().apply();
+            uiStage.draw();
+            spriteBatch.begin();
+        }
+
         spriteBatch.end();
     }
 
@@ -122,5 +165,7 @@ public abstract class Level {
     public void dispose() {
         for (Texture t : objectTextures) t.dispose();
         backgroundTexture.dispose();
+    if (font != null) font.dispose();
+    if (uiStage != null) uiStage.dispose();
     }
 }

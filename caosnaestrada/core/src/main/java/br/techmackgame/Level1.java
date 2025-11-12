@@ -20,16 +20,23 @@ public class Level1 extends Level {
     @Override
     protected void setupBackground() {
         backgroundTexture = new Texture("backgroundlvl1.png");
-        bgWidthUnits = 8f; // mesma proporção da sua Main
+        bgWidthUnits = 8f; 
         bgX1 = 0;
         bgX2 = bgWidthUnits;
     }
 
     @Override
     protected void setupObjects() {
-        // Player
+
+        // energia para este nível
+        float maxEnergy = 100f; // máximo
+        float baseEnergy = maxEnergy * 0.1f; // começa com 50% 
+        energy = new Energy(baseEnergy, maxEnergy);
+
+        // Player (depende da energia)
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
+        player.setEnergy(energy);
 
         // Caminhão
         float truckWidth = 4f;
@@ -38,7 +45,7 @@ public class Level1 extends Level {
         float truckY = 1f;
         truck = new Truck(truckX, truckY, truckWidth, truckHeight);
 
-        // Objetos que caem (iguais aos da sua Main)
+        // Objetos que caem 
         objectTextures = new Array<>();
         objectTextures.add(new Texture("abajur.png"));
         objectTextures.add(new Texture("brinquedos.png"));
