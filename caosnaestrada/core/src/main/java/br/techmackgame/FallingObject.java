@@ -1,5 +1,6 @@
 package br.techmackgame;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,6 +13,8 @@ public class FallingObject extends GameObject {
     private boolean active = true;
     private float groundY = 1f; // altura do chão 
     private float rotationSpeed; // velocidade de rotação 
+    private Sound impactSound;
+    private boolean hasPlayedImpactSound = false;
 
     public FallingObject(Texture texture, float startX, float startY, float width, float height) {
         super(texture, startX, startY, width, height);
@@ -45,8 +48,14 @@ public class FallingObject extends GameObject {
         float newRotation = objectSprite.getRotation() + rotationSpeed * delta;
         objectSprite.setRotation(newRotation);
 
-        // Caiu no chão → desativa
+        // caiu no chão desativa
         if (objectSprite.getY() <= groundY) {
+            if (!hasPlayedImpactSound && impactSound != null) {
+                float volume = 0.5f;
+                float pitch = 0.9f + MathUtils.random() * 0.2f;
+                impactSound.play(volume, pitch, 0f);
+                hasPlayedImpactSound = true;
+            }
             active = false;
         }
     }
@@ -61,5 +70,9 @@ public class FallingObject extends GameObject {
 
     public void collect() {
         active = false;
+    }
+
+    public void setImpactSound(Sound sound) {
+        this.impactSound = sound;
     }
 }

@@ -56,6 +56,7 @@ public abstract class Level {
     // efeitos sonoros
     protected Array<Sound> objectSounds;
     protected Music truckSound;
+    protected Sound impactSound;
 
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
@@ -111,6 +112,8 @@ public abstract class Level {
         objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound4.mp3")));
         objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound5.mp3")));
         objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound6.mp3")));
+
+        impactSound = Gdx.audio.newSound(Gdx.files.internal("fellSound1.mp3"));
 
         if (player != null) {
             playerStartX = player.getX();
@@ -195,11 +198,12 @@ public abstract class Level {
             float startY = truck.getY() + truck.getHeight();
 
             fallingObject = new FallingObject(randomTexture, startX, startY, 0.5f, 0.5f);
+            fallingObject.setImpactSound(impactSound);
             if (objectSounds != null && objectSounds.size > 0) {
                 Sound randomSound = objectSounds.random();
 
                 // gera volume e pitch
-                float volume = 0.4f;
+                float volume = 0.3f;
                 float pitch = 0.9f + (float)Math.random() * 0.2f;
 
                 randomSound.play(volume, pitch, 0f);
