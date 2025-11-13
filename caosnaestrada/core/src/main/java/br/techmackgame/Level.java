@@ -139,6 +139,8 @@ public abstract class Level {
         }
     }
 
+    protected abstract int getRequiredScore();
+
     protected abstract Music getIntroSound();
 
     protected abstract String getIntroText();
@@ -265,6 +267,12 @@ public abstract class Level {
         // soma os pontos
         score += fallingObject.getPoints();
         scoreLabel.setText("Pontuação: " + score);
+
+        // verifica se completou o nível
+        if (score >= getRequiredScore() && !levelComplete) {
+            levelComplete = true;
+            truckSound.stop();
+        }
 
         System.out.println("Pontos ganhos: " + fallingObject.getPoints() + " | Total: " + score);
 

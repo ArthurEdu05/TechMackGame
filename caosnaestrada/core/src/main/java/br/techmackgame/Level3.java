@@ -60,4 +60,9 @@ public class Level3 extends Level {
     public Music getIntroSound() {
         return Gdx.audio.newMusic(Gdx.files.internal("intro3Sound.mp3"));
     }
+
+    @Override
+    protected int getRequiredScore() {
+        return 40;  // pontos necessários para completar
+    }
 }
