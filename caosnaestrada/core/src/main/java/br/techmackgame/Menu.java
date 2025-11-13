@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.audio.Sound;
 
 public class Menu {
 
@@ -30,7 +31,7 @@ public class Menu {
 
     private Label levelLabel;
     private BitmapFont font;
-    
+    private Sound clickSound;
     private boolean showingQuitConfirmation = false;
 
     private String[] levels = {"Level 1", "Level 2", "Level 3"};
@@ -99,6 +100,7 @@ public class Menu {
         font = new BitmapFont();
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
 
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
         // Label do Carrossel (fixo)
         levelLabel = new Label("< " + levels[currentLevel] + " >", style);
         levelLabel.setFontScale(1f);
@@ -119,6 +121,7 @@ public class Menu {
         
                 if (x >= confirmQuitButton.getX() && x <= confirmQuitButton.getX() + confirmQuitButton.getWidth() &&
                     y >= confirmQuitButton.getY() && y <= confirmQuitButton.getY() + confirmQuitButton.getHeight()) {
+                    clickSound.play(0.7f);
                     exitClicked = true;
                     return;
                 }
@@ -126,6 +129,7 @@ public class Menu {
                 // Cancelar saída
                 if (x >= cancelButton.getX() && x <= cancelButton.getX() + cancelButton.getWidth() &&
                     y >= cancelButton.getY() && y <= cancelButton.getY() + cancelButton.getHeight()) {
+                    clickSound.play(0.7f);
                     showingQuitConfirmation = false;
                     quitConfirmationDialog.setVisible(false);
                     confirmQuitButton.setVisible(false);
@@ -142,6 +146,7 @@ public class Menu {
                 
                 if (x >= playButton.getX() && x <= playButton.getX() + playButton.getWidth() &&
                     y >= playButton.getY() && y <= playButton.getY() + playButton.getHeight()) {
+                    clickSound.play(0.7f);
                     playClicked = true;
                     return;
                 }
@@ -149,6 +154,7 @@ public class Menu {
                 // Botão Sair
                 if (x >= quitButton.getX() && x <= quitButton.getX() + quitButton.getWidth() &&
                     y >= quitButton.getY() && y <= quitButton.getY() + quitButton.getHeight()) {
+                    clickSound.play(0.7f);
                     showingQuitConfirmation = true;
                     backgroundImage.setVisible(false);
                     playButton.setVisible(false);
@@ -164,12 +170,14 @@ public class Menu {
                 // Carrossel - Setas clicáveis
                 float arrowWidth = 20;
                 if (x >= levelLabel.getX() && x <= levelLabel.getX() + arrowWidth) { 
+                    clickSound.play(0.7f);
                     currentLevel--;
                     if (currentLevel < 0) currentLevel = levels.length - 1;
                   
                     levelLabel.setText("< " + levels[currentLevel] + " >");
                 } else if (x >= levelLabel.getX() + levelLabel.getWidth() - arrowWidth &&
                            x <= levelLabel.getX() + levelLabel.getWidth()) { // seta direita
+                    clickSound.play(0.7f);
                     currentLevel++;
                     if (currentLevel >= levels.length) currentLevel = 0;
                     
@@ -211,5 +219,6 @@ public class Menu {
         confirmQuitTexture.dispose();
         cancelTexture.dispose();
         font.dispose();
+        if (clickSound != null) clickSound.dispose();
     }
 }

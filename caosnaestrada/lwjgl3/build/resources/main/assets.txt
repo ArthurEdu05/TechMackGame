@@ -33,7 +33,7 @@ backgroundlvl2.png
 backgroundlvl3.png
 brinquedos.png
 cancelButton.png
-click.wav
+click.mp3
 countSound.mp3
 fallingSound.mp3
 fallingSound2.mp3
