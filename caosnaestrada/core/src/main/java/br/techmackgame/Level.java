@@ -57,7 +57,7 @@ public abstract class Level {
     protected Array<Sound> objectSounds;
     protected Music truckSound;
     protected Sound impactSound;
-
+    protected Sound collectSound;
     protected int lastCount = -1;
     protected Sound countSound;
     protected Sound goSound;
@@ -124,7 +124,7 @@ public abstract class Level {
         objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound6.mp3")));
 
         impactSound = Gdx.audio.newSound(Gdx.files.internal("fellSound1.mp3"));
-
+        collectSound = Gdx.audio.newSound(Gdx.files.internal("getObject.mp3"));
         countSound = Gdx.audio.newSound(Gdx.files.internal("countSound.mp3"));
         goSound = Gdx.audio.newSound(Gdx.files.internal("goSound.mp3"));
 
@@ -243,6 +243,7 @@ public abstract class Level {
             fallingObject.update(delta);
             if (fallingObject.isActive() && player.getBounds().overlaps(fallingObject.getBounds())) {
                 fallingObject.collect();
+                collectSound.play(0.8f); 
             }
         }
 
@@ -330,5 +331,8 @@ public abstract class Level {
         goSound.dispose();
         introSound.dispose();
         truckSound.dispose();
+        impactSound.dispose();
+
+        if (collectSound != null) collectSound.dispose();
     }
 }
