@@ -183,7 +183,10 @@ public abstract class Level {
             }
         }
         
-        if (energy != null) energy.update(delta);
+        if (playerStartedMoving) {
+            if (energy != null) energy.update(delta);
+        }
+
         if (player != null) {
             if (!allowPlayerMovement) {
                 player.setStanding(); // mantém parado, sem responder às teclas
@@ -218,24 +221,26 @@ public abstract class Level {
         }
 
         // controle de spawn
-        spawnTimer += delta;
-        if ((fallingObject == null || !fallingObject.isActive()) && spawnTimer > getSpawnInterval()) {
-            spawnTimer = 0f;
+        if (playerStartedMoving) {
+            spawnTimer += delta;
+            if ((fallingObject == null || !fallingObject.isActive()) && spawnTimer > getSpawnInterval()) {
+                spawnTimer = 0f;
 
-            Texture randomTexture = objectTextures.random();
-            float startX = truck.getX();
-            float startY = truck.getY() + truck.getHeight();
+                Texture randomTexture = objectTextures.random();
+                float startX = truck.getX();
+                float startY = truck.getY() + truck.getHeight();
 
-            fallingObject = new FallingObject(randomTexture, startX, startY, 0.5f, 0.5f);
-            fallingObject.setImpactSound(impactSound);
-            if (objectSounds != null && objectSounds.size > 0) {
-                Sound randomSound = objectSounds.random();
+                fallingObject = new FallingObject(randomTexture, startX, startY, 0.5f, 0.5f);
+                fallingObject.setImpactSound(impactSound);
+                if (objectSounds != null && objectSounds.size > 0) {
+                    Sound randomSound = objectSounds.random();
 
-                // gera volume e pitch
-                float volume = 0.3f;
-                float pitch = 0.9f + (float)Math.random() * 0.2f;
+                    // gera volume e pitch
+                    float volume = 0.3f;
+                    float pitch = 0.9f + (float)Math.random() * 0.2f;
 
-                randomSound.play(volume, pitch, 0f);
+                    randomSound.play(volume, pitch, 0f);
+                }
             }
         }
 
