@@ -15,7 +15,7 @@ public class Truck extends GameObject {
 
     public Truck(float x, float y, float width, float height) {
         // cria temporariamente uma Texture a partir de RunTruck1 para passar ao super; a região será substituída em seguida
-        super(new Texture("RunTruck1.png"), x, y, width, height);
+        super(new Texture("RunTruck1.png"), x, y - 0.2f, width, height);
 
         // carrega os frames RunTruck1..RunTruck8
         framesTruck = new TextureRegion[8];

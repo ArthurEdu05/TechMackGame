@@ -26,7 +26,7 @@ public class Level3 extends Level {
     protected void setupObjects() {
         // Player
         Texture playerTexture = new Texture("standingRight.png");
-        player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
+        player = new Player(playerTexture, 1, 0.5f, 0.5f, 1f, viewport);
     // energia para este nível
     energy = new Energy(10f, 150f);
 
@@ -35,7 +35,7 @@ public class Level3 extends Level {
         float truckHeight = 2f;
         float truckX = viewport.getWorldWidth() - truckWidth / 2;
         float truckY = 1f;
-        truck = new Truck(truckX, truckY, truckWidth, truckHeight);
+        truck = new Truck(truckX, truckY - 0.5f, truckWidth, truckHeight);
 
         // Objetos aleatórios
         objectTextures = new Array<>();
