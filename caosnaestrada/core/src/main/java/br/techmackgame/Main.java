@@ -49,7 +49,7 @@ public class Main implements ApplicationListener {
                 currentLevelIndex = menu.getSelectedLevel(); // salva index
                 currentLevel = createLevelByIndex(currentLevelIndex);
 
-                System.out.println("🚀 Iniciando Level " + (currentLevelIndex + 1));
+                System.out.println("Iniciando Level " + (currentLevelIndex + 1));
 
                 gameStarted = true;
                 menu.dispose();
@@ -65,6 +65,18 @@ public class Main implements ApplicationListener {
                 currentLevel.update(delta);
                 currentLevel.render();
 
+                // game over?
+                if (currentLevel.shouldExitGameOver()) {
+                    currentLevel.dispose();
+                    currentLevel = null;
+
+                    gameStarted = false;
+                    menu = new Menu();
+                    menu.setSelectedLevel(0);
+
+                    return;
+                }
+
                 // terminou o level?
                 if (currentLevel.isLevelComplete()) {
 
@@ -73,7 +85,7 @@ public class Main implements ApplicationListener {
     
                     if (currentLevelIndex >= 3) {
 
-                        System.out.println("🌟 Todos os níveis completos! Voltando ao menu...");
+                        System.out.println("Todos os níveis completos! Voltando ao menu...");
 
                         // descarta o level atual
                         currentLevel.dispose();
@@ -88,7 +100,7 @@ public class Main implements ApplicationListener {
                     }
 
                     // carrega o próximo level normalmente
-                    System.out.println("➡ Indo para Level " + (currentLevelIndex + 1));
+                    System.out.println("Indo para Level " + (currentLevelIndex + 1));
                     currentLevel.dispose();
                     currentLevel = createLevelByIndex(currentLevelIndex);
                 }

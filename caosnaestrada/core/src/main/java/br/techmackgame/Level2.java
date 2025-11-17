@@ -11,7 +11,7 @@ public class Level2 extends Level {
 
     public Level2(FitViewport viewport, SpriteBatch spriteBatch) {
         super(viewport, spriteBatch);
-        System.out.println("🎮 Level 2 iniciado!");
+        System.out.println("Level 2 iniciado!");
     }
 
     @Override
@@ -19,25 +19,25 @@ public class Level2 extends Level {
         backgroundTexture = new Texture("backgroundlvl2.png");
         bgX1 = 0;
         bgX2 = bgWidthUnits;
-        bgSpeed = 3.5f; // Fundo se move mais rápido
+        bgSpeed = 3.5f; // fundo se move mais rápido
     }
 
     @Override
     protected void setupObjects() {
-        // Player
+        // player
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
-    // energia para este nível
-    energy = new Energy(15f, 120f);
+        // energia para este nível
+        energy = new Energy(15f, 120f);
 
-        // Caminhão
+        // caminhão
         float truckWidth = 4f;
         float truckHeight = 2f;
         float truckX = viewport.getWorldWidth() - truckWidth / 2;
         float truckY = 1f;
         truck = new Truck(truckX, truckY, truckWidth, truckHeight);
 
-        // Objetos aleatórios
+        // objetos aleatórios
         objectTextures = new Array<>();
         objectTextures.add(new Texture("abajur.png"));
         objectTextures.add(new Texture("brinquedos.png"));

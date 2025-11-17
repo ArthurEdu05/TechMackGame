@@ -44,7 +44,7 @@ public class Menu {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 
-        // Texturas
+        // texturas
         backgroundTexture = new Texture("menuBackground.png");
         playTexture = new Texture("playButton.png");
         quitTexture = new Texture("quitButton.png");
@@ -52,20 +52,20 @@ public class Menu {
         confirmQuitTexture = new Texture("quitConfirmButton.png");
         cancelTexture = new Texture("cancelButton.png");
 
-        // Fundo
+        // fundo
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backgroundImage.setPosition(0, 0);
         stage.addActor(backgroundImage);
 
-        // Diálogo de confirmação de sair do jogo 
+        // diálogo de confirmação de sair do jogo 
         quitConfirmationDialog = new Image(quitConfirmationTexture);
         quitConfirmationDialog.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         quitConfirmationDialog.setPosition(0, 0);
         quitConfirmationDialog.setVisible(false);
         stage.addActor(quitConfirmationDialog);
 
-        // Botões de confirmação 
+        // botões de confirmação 
         float buttonWidth = 200;
         float buttonHeight = 80;
         float buttonSpacing = 30; 
@@ -85,7 +85,7 @@ public class Menu {
         confirmQuitButton.setVisible(false);
         stage.addActor(confirmQuitButton);
 
-        // Botões
+        // botões
         playButton = new Image(playTexture);
         playButton.setSize(200, 60);
         playButton.setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 10);
@@ -96,12 +96,12 @@ public class Menu {
         quitButton.setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 90);
         stage.addActor(quitButton);
 
-        // Fonte
+        // fonte
         font = new BitmapFont();
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
-        // Label do Carrossel (fixo)
+        // label do carrossel (fixo)
         levelLabel = new Label("< " + levels[currentLevel] + " >", style);
         levelLabel.setFontScale(1f);
         levelLabel.setPosition(Gdx.graphics.getWidth() / 2 - levelLabel.getWidth() / 2, 100);
@@ -110,13 +110,13 @@ public class Menu {
 
     public void update() {
         if (Gdx.input.justTouched()) {
-            // Converte coordenadas da tela para coordenadas do stage
+            // converte coordenadas da tela para coordenadas do stage
             Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             float x = stageCoords.x;
             float y = stageCoords.y;
 
             if (showingQuitConfirmation) {
-                // Se estiver na tela de confirmação, só processa cliques nos botões de confirmação
+                // se estiver na tela de confirmação, só processa cliques nos botões de confirmação
                 
         
                 if (x >= confirmQuitButton.getX() && x <= confirmQuitButton.getX() + confirmQuitButton.getWidth() &&
@@ -126,7 +126,7 @@ public class Menu {
                     return;
                 }
 
-                // Cancelar saída
+                // cancelar saida
                 if (x >= cancelButton.getX() && x <= cancelButton.getX() + cancelButton.getWidth() &&
                     y >= cancelButton.getY() && y <= cancelButton.getY() + cancelButton.getHeight()) {
                     clickSound.play(0.7f);
@@ -142,7 +142,7 @@ public class Menu {
                     return;
                 }
             } else {
-                // Se estiver no menu principal, processa os cliques normais do menu
+                // se estiver no menu principal, processa os cliques normais do menu
                 
                 if (x >= playButton.getX() && x <= playButton.getX() + playButton.getWidth() &&
                     y >= playButton.getY() && y <= playButton.getY() + playButton.getHeight()) {
@@ -151,7 +151,7 @@ public class Menu {
                     return;
                 }
 
-                // Botão Sair
+                // sair
                 if (x >= quitButton.getX() && x <= quitButton.getX() + quitButton.getWidth() &&
                     y >= quitButton.getY() && y <= quitButton.getY() + quitButton.getHeight()) {
                     clickSound.play(0.7f);
@@ -167,7 +167,7 @@ public class Menu {
                     return;
                 }
 
-                // Carrossel - Setas clicáveis
+                // carrossel
                 float arrowWidth = 20;
                 if (x >= levelLabel.getX() && x <= levelLabel.getX() + arrowWidth) { 
                     clickSound.play(0.7f);

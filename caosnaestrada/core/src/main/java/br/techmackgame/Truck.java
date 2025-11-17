@@ -48,7 +48,7 @@ public class Truck extends GameObject {
 
         stateTime += delta;
 
-        // Faz o loop contínuo dos frames 1..8
+        // faz o loop contínuo dos frames 1..8
         TextureRegion frame = runLoopAnimation.getKeyFrame(stateTime, true);
         objectSprite.setRegion(frame);
     }

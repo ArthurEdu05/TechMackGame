@@ -15,32 +15,32 @@ public class FallingObject extends GameObject {
     private float groundY = 1f; // altura do chão 
     private float rotationSpeed; // velocidade de rotação 
 
-    // ⭐ Controle de pontuação e coleta
+    // controle de pontuação e coleta
     private int points; 
     private boolean collected = false; 
-    // ⭐
     private Sound impactSound;
     private boolean hasPlayedImpactSound = false;
+    private boolean hitGround = false;
 
     public FallingObject(Texture texture, float startX, float startY, float width, float height) {
         super(texture, startX, startY, width, height);
         reset(startX, startY);
     }
 
-    // Define um novo arco aleatório a partir da posição inicial 
+    // novo arco aleatório a partir da posição inicial 
     public void reset(float startX, float startY) {
         objectSprite.setPosition(startX, startY);
         bounds.setPosition(startX, startY);
         active = true;
-        // ⭐
         collected = false;
-        // ⭐
+        hitGround = false;
+        hasPlayedImpactSound = false;
 
-        // Arco aleatório
+        // arco aleatório
         velocityX = MathUtils.random(-4f, -1f); // horizontal para a esquerda
         velocityY = MathUtils.random(2.5f, 4f); // vertical para cima
 
-        // Gira em sentido horário ou anti-horário aleatoriamente
+        // gira em sentido horário ou anti-horário aleatoriamente
         rotationSpeed = MathUtils.randomSign() * MathUtils.random(90f, 360f);
         objectSprite.setOriginCenter(); // permite rotação suave no centro
     }
@@ -49,11 +49,11 @@ public class FallingObject extends GameObject {
     public void update(float delta) {
         if (!active) return;
 
-        // Movimento parabólico
+        // movimento parabólico
         velocityY += gravity * delta;
         translate(velocityX * delta, velocityY * delta);
 
-        // Atualiza a rotação
+        // atualiza a rotação
         float newRotation = objectSprite.getRotation() + rotationSpeed * delta;
         objectSprite.setRotation(newRotation);
 
@@ -65,6 +65,7 @@ public class FallingObject extends GameObject {
                 impactSound.play(volume, pitch, 0f);
                 hasPlayedImpactSound = true;
             }
+            hitGround = true;
             active = false;
         }
     }
@@ -78,12 +79,10 @@ public class FallingObject extends GameObject {
     }
 
     public void collect() {
-        // Marca como coletado e desativa o objeto
+        // marca como coletado e desativa o objeto
         active = false;
         collected = true;
     }
-
-    // ⭐
 
     public boolean isCollected() {
         return collected;
@@ -108,5 +107,9 @@ public class FallingObject extends GameObject {
 
     public void setImpactSound(Sound sound) {
         this.impactSound = sound;
+    }
+
+    public boolean hasHitGround() {
+        return hitGround;
     }
 }
