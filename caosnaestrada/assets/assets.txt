@@ -1,4 +1,5 @@
 .gitkeep
+GameOver.png
 Run1.png
 Run2.png
 Run3.png
@@ -32,6 +33,7 @@ backgroundlvl1.png
 backgroundlvl2.png
 backgroundlvl3.png
 brinquedos.png
+btnSairGameOver.png
 cancelButton.png
 click.mp3
 countSound.mp3
@@ -42,6 +44,7 @@ fallingSound4.mp3
 fallingSound5.mp3
 fallingSound6.mp3
 fellSound1.mp3
+gameOver.mp3
 getObject.mp3
 goSound.mp3
 intro1Sound.mp3

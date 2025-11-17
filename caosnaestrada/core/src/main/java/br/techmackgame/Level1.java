@@ -11,7 +11,7 @@ public class Level1 extends Level {
 
     public Level1(FitViewport viewport, SpriteBatch spriteBatch) {
         super(viewport, spriteBatch);
-        this.bgSpeed = 2f;         // Velocidade do fundo
+        this.bgSpeed = 2f;         // velocidade do fundo
     }
 
     @Override
@@ -35,19 +35,19 @@ public class Level1 extends Level {
         float baseEnergy = maxEnergy * 0.1f; // começa com 50% 
         energy = new Energy(baseEnergy, maxEnergy);
 
-        // Player (depende da energia)
+        // player (depende da energia)
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
         player.setEnergy(energy);
 
-        // Caminhão
+        // caminhão
         float truckWidth = 4f;
         float truckHeight = 2f;
         float truckX = viewport.getWorldWidth() - truckWidth / 2;
         float truckY = 1f;
         truck = new Truck(truckX, truckY, truckWidth, truckHeight);
 
-        // Objetos que caem 
+        // objetos que caem 
         objectTextures = new Array<>();
         objectTextures.add(new Texture("abajur.png"));
         objectTextures.add(new Texture("brinquedos.png"));

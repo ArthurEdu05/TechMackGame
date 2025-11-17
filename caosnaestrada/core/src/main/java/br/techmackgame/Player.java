@@ -92,7 +92,7 @@ public class Player extends GameObject{
         float playerWidth = objectSprite.getWidth();
         float playerHeight = objectSprite.getHeight();
 
-        // Se a energia estiver presente e for zero (ou menor), bloqueia movimento
+        // se energia estiver presente e for zero (ou menor), bloqueia movimento
         float currentEnergy = (energy != null) ? energy.getEnergy() : Float.MAX_VALUE;
 
         if (currentEnergy > 0f) {
@@ -123,7 +123,7 @@ public class Player extends GameObject{
             objectSprite.setSize(originalWidth, originalHeight);
         }
         } else {
-            // Sem energia: mantém o jogador parado, mas ainda garante que ele fique dentro da tela
+            // sem energia: mantém o jogador parado, mas ainda garante que ele fique dentro da tela
             stateTime = 0f;
             if (facing >= 0) {
                 objectSprite.setRegion(standingRegion);
@@ -133,7 +133,7 @@ public class Player extends GameObject{
             objectSprite.setSize(originalWidth, originalHeight);
         }
 
-        // Garante que o jogador não saia da tela
+        // garante que o jogador não saia da tela
         objectSprite.setX(MathUtils.clamp(objectSprite.getX(), 0, worldWidth - playerWidth));
         objectSprite.setY(MathUtils.clamp(objectSprite.getY(), 0, worldHeight - playerHeight));
     }

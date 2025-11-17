@@ -36,7 +36,7 @@ public abstract class Level {
     protected boolean playerStartedMoving = false;
     private float playerStartX; // posição inicial do player
      
-    // Elementos de UI
+    // elementos de UI
     protected BitmapFont font;
     protected Stage uiStage;
     protected Label energyLabel;
@@ -63,6 +63,16 @@ public abstract class Level {
     protected Sound goSound;
 
     protected Music introSound;
+
+    // game over
+
+    protected Texture gameOverBg;
+    protected Texture exitButton;
+    protected float exitX, exitY, exitW, exitH;
+    protected boolean gameOver = false;
+    protected boolean exitGameOver = false;
+    protected Sound gameOverSound;
+    protected boolean gameOverSoundPlayed = false;
 
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
@@ -96,7 +106,7 @@ public abstract class Level {
         );
         uiStage.addActor(introLabel);
 
-        // Contagem regressiva
+        // contagem regressiva
         Label.LabelStyle countdownStyle = new Label.LabelStyle(font, Color.YELLOW);
         countdownLabel = new Label("", countdownStyle);
         countdownLabel.setFontScale(2f);
@@ -137,6 +147,19 @@ public abstract class Level {
         if (player != null) {
             playerStartX = player.getX();
         }
+
+       // game over UI
+        gameOverBg = new Texture("GameOver.png");
+        exitButton = new Texture("btnSairGameOver.png");
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("gameOver.mp3"));
+        gameOverSoundPlayed = false;
+
+        // área do botão
+        exitW = 2f;
+        exitH = 0.6f;
+        exitX = 3f;
+        exitY = 1.1f;
+        
     }
 
     protected abstract int getRequiredScore();
@@ -145,13 +168,30 @@ public abstract class Level {
 
     protected abstract String getIntroText();
 
-    // Cada Level define seu spawn interval
+    // cada level define seu spawn interval
     protected abstract float getSpawnInterval(); 
 
     protected abstract void setupBackground();
     protected abstract void setupObjects();
 
     public void update(float delta) {
+
+        // se game over, detectar clique no botão sair
+        if (gameOver) {
+            if (Gdx.input.justTouched()) {
+                // converter coordenadas
+                float x = viewport.unproject(new com.badlogic.gdx.math.Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).x;
+                float y = viewport.unproject(new com.badlogic.gdx.math.Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).y;
+
+                // verificar clique no botão
+                if (x >= exitX && x <= exitX + exitW &&
+                    y >= exitY && y <= exitY + exitH) {
+
+                   exitGameOver = true;
+                }
+            }
+            return;
+        }
 
         // intro
         if (showingIntro) {
@@ -197,7 +237,7 @@ public abstract class Level {
             }
         }
 
-        // Atualiza texto da UI com porcentagem 
+        // atualiza texto da UI com porcentagem 
         if (energy != null && energyLabel != null) {
             float percent = (energy.getEnergy() / energy.getMaxEnergy()) * 100f;
             energyLabel.setText(String.format("Energia: %.0f%%", percent));
@@ -252,6 +292,18 @@ public abstract class Level {
                 fallingObject.collect();
                 collectSound.play(0.8f); 
             }
+
+            // caiu no chão perde pontos
+            if (fallingObject != null && fallingObject.hasHitGround()) {
+
+                // tira pontos
+                score -= 2; 
+                scoreLabel.setText("Pontuação: " + score);
+
+                System.out.println("Objeto caiu no chão! Pontuação: " + score);
+
+                fallingObject.deactivate();
+            }
         }
 
         if (fallingObject != null && fallingObject.isCollected()) {
@@ -292,6 +344,21 @@ public abstract class Level {
             introSound.stop();
             truckSound.play();
         }
+
+        // game over
+        if (!gameOver && score < 0) {
+            gameOver = true;
+            allowPlayerMovement = false;
+            truckSound.stop();
+            introSound.stop();
+        
+            if (!gameOverSoundPlayed && gameOverSound != null) {
+                gameOverSound.play(1.0f); // toca o som
+                gameOverSoundPlayed = true; // garante que não toque novamente
+            }
+
+            System.out.println("GAME OVER!");
+        }
     }
 
     public void render() {
@@ -308,7 +375,7 @@ public abstract class Level {
         truck.draw(spriteBatch);
         if (fallingObject != null) fallingObject.draw(spriteBatch);
 
-        // Desenha UI Stage (labels)
+        // desenha UI Stage (labels)
         if (uiStage != null) {
             // uiStage usa coordenadas de pixels; desenha por cima do spriteBatch
             spriteBatch.end();
@@ -318,6 +385,26 @@ public abstract class Level {
         }
 
         spriteBatch.end();
+
+        // tela de game over
+        if (gameOver) {
+
+            viewport.apply(); // garante que a viewport está atualizada
+            spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+
+            spriteBatch.begin();
+
+            float goWidth = viewport.getWorldWidth() * 0.7f;  // 70% da largura da tela
+            float goHeight = viewport.getWorldHeight() * 0.7f; // 70% da altura da tela
+            float goX = (viewport.getWorldWidth() - goWidth) / 2f;  // centraliza horizontalmente
+            float goY = (viewport.getWorldHeight() - goHeight) / 2f; // centraliza verticalmente
+
+            spriteBatch.draw(gameOverBg, goX, goY, goWidth, goHeight);
+            // botão sair
+            spriteBatch.draw(exitButton, exitX, exitY, exitW, exitH);
+
+            spriteBatch.end();
+}
     }
 
     public boolean isLevelComplete() {
@@ -330,6 +417,14 @@ public abstract class Level {
         if (levelComplete && truckSound.isPlaying()) {
             truckSound.stop();
         }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+        public boolean shouldExitGameOver() {
+        return exitGameOver;
     }
 
     public void dispose() {
@@ -347,5 +442,10 @@ public abstract class Level {
         impactSound.dispose();
 
         if (collectSound != null) collectSound.dispose();
+
+        if (gameOverBg != null) gameOverBg.dispose();
+        if (exitButton != null) exitButton.dispose();
+
+        if (gameOverSound != null) gameOverSound.dispose();
     }
 }
