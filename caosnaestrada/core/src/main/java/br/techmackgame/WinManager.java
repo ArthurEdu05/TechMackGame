@@ -46,7 +46,7 @@ public class WinManager {
         if (introSound != null && introSound.isPlaying()) introSound.stop();
         // tocar som de vitória (uma vez)
         if (winSound != null && !soundPlayed) {
-            winSound.play(1.0f);
+            winSound.play(0.5f);
             soundPlayed = true;
         }
     }
