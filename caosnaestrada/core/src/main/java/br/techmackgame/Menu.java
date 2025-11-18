@@ -169,6 +169,7 @@ public class Menu {
                     levelLabel.setVisible(true);
                     if (resumeButton != null) resumeButton.setVisible(true);
                     if (restartButton != null) restartButton.setVisible(true);
+                     if (menuButton != null) menuButton.setVisible(true);
 
                     return;
                 }
@@ -196,6 +197,7 @@ public class Menu {
                     levelLabel.setVisible(false);
                     if (resumeButton != null) resumeButton.setVisible(false);
                     if (restartButton != null) restartButton.setVisible(false);
+                    if (menuButton != null) menuButton.setVisible(false);
 
                     quitConfirmationDialog.setVisible(true);
                     confirmQuitButton.setVisible(true);
