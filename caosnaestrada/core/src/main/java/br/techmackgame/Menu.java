@@ -40,6 +40,9 @@ public class Menu {
     private Sound clickSound;
     private boolean showingQuitConfirmation = false;
 
+    // indica se o menu foi criado com botões extras (menu de pause)
+    private boolean extraButtonsMode = false;
+
     private String[] levels = {"Level 1", "Level 2", "Level 3"};
     private int currentLevel = 0;
 
@@ -123,6 +126,7 @@ public class Menu {
         this(); // chama o construtor original
 
         if (extraButtons) {
+            this.extraButtonsMode = true;
 
             // texturas extras
             restartTexture = new Texture("restartButton.png");
@@ -166,12 +170,17 @@ public class Menu {
 
 
                     backgroundImage.setVisible(true);
-                    playButton.setVisible(true);
+                    // somente reexibe o botão de play e o label de nível se NÃO estivermos
+                    // no modo de menu de pausa (extraButtonsMode). No menu de pausa, o
+                    // botão de play deve permanecer invisível.
+                    if (!extraButtonsMode) {
+                        playButton.setVisible(true);
+                        levelLabel.setVisible(true);
+                    }
                     quitButton.setVisible(true);
-                    levelLabel.setVisible(true);
                     if (resumeButton != null) resumeButton.setVisible(true);
                     if (restartButton != null) restartButton.setVisible(true);
-                     if (menuButton != null) menuButton.setVisible(true);
+                    if (menuButton != null) menuButton.setVisible(true);
 
                     return;
                 }
