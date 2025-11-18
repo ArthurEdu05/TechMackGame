@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -73,6 +75,14 @@ public abstract class Level {
     protected boolean exitGameOver = false;
     protected Sound gameOverSound;
     protected boolean gameOverSoundPlayed = false;
+
+    // pause
+    protected boolean paused = false;
+    protected Menu pauseMenu = null;
+    protected Texture pauseButtonTexture;
+    protected Image pauseButton;
+    public boolean wantsRestart = false;
+    public boolean wantsPlayFromPause = false;
 
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
@@ -159,6 +169,19 @@ public abstract class Level {
         exitH = 0.6f;
         exitX = 3f;
         exitY = 1.1f;
+
+        // pause
+        pauseButtonTexture = new Texture("pauseButton.png");
+        pauseButton = new Image(pauseButtonTexture);
+
+        // define tamanho em pixels
+        pauseButton.setSize(80, 80);
+
+        // define posição em pixels, no canto superior direito
+        pauseButton.setPosition(Gdx.graphics.getWidth() - 90, Gdx.graphics.getHeight() - 90);
+
+        // adiciona ao stage
+        uiStage.addActor(pauseButton);
         
     }
 
@@ -175,6 +198,47 @@ public abstract class Level {
     protected abstract void setupObjects();
 
     public void update(float delta) {
+
+        // pause
+
+        if (!paused && Gdx.input.justTouched()) {
+            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+            touchPos = uiStage.screenToStageCoordinates(touchPos);
+
+            if (touchPos.x >= pauseButton.getX() && touchPos.x <= pauseButton.getX() + pauseButton.getWidth() &&
+                touchPos.y >= pauseButton.getY() && touchPos.y <= pauseButton.getY() + pauseButton.getHeight()) {
+                paused = true;
+                allowPlayerMovement = false;
+                pauseMenu = new Menu(true);
+            }
+        }
+
+        if (paused && pauseMenu != null) {
+            pauseMenu.update();
+
+            if (pauseMenu.shouldResumeGame()) { // clicou em continuar
+                paused = false;
+                allowPlayerMovement = true;
+                pauseMenu.dispose();
+                pauseMenu = null;
+            } else if (pauseMenu.shouldRestartGame()) { // clicou em reiniciar
+                paused = false;
+                allowPlayerMovement = true;
+                wantsRestart = true;
+                pauseMenu.dispose();
+                pauseMenu = null;
+            } else if (pauseMenu.shouldPlayFromPause()) { // clicou em rogar
+                paused = false;
+                allowPlayerMovement = true;
+                wantsPlayFromPause = true;  
+                pauseMenu.dispose();
+                pauseMenu = null;
+            } else if (pauseMenu.shouldExitGame()) { // clicou em sair
+                Gdx.app.exit();
+            }
+
+            return; // não atualiza nada do level enquanto pausado
+        }
 
         // se game over, detectar clique no botão sair
         if (gameOver) {
@@ -404,7 +468,13 @@ public abstract class Level {
             spriteBatch.draw(exitButton, exitX, exitY, exitW, exitH);
 
             spriteBatch.end();
-}
+        }
+
+        // pause
+
+        if (paused && pauseMenu != null) {
+            pauseMenu.render();
+        }
     }
 
     public boolean isLevelComplete() {
@@ -423,7 +493,7 @@ public abstract class Level {
         return gameOver;
     }
 
-        public boolean shouldExitGameOver() {
+    public boolean shouldExitGameOver() {
         return exitGameOver;
     }
 

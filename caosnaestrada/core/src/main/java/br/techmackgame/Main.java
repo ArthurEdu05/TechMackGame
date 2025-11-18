@@ -105,6 +105,23 @@ public class Main implements ApplicationListener {
                     currentLevel = createLevelByIndex(currentLevelIndex);
                 }
 
+                // pediu restart?
+                if (currentLevel.wantsRestart) {
+
+                    System.out.println("Reiniciando Level " + (currentLevelIndex + 1));
+
+                    currentLevel.dispose();
+                    currentLevel = createLevelByIndex(currentLevelIndex);
+
+                    return;
+                }
+
+                if (currentLevel.wantsPlayFromPause) {
+                    currentLevel.dispose();
+                    currentLevel = createLevelByIndex(currentLevelIndex); // cria de novo
+                    return;
+                }
+
             } else {
                 // fallback de segurança
                 System.err.println("currentLevel está nulo, retornando ao menu...");

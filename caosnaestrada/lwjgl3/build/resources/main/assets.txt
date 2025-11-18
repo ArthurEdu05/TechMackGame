@@ -52,10 +52,13 @@ intro2Sound.mp3
 intro3Sound.mp3
 menuBackground.png
 notebook.png
+pauseButton.png
 playButton.png
 quitButton.png
 quitConfirmButton.png
 quitConfirmation.png
+restartButton.png
+resumeButton.png
 roupas.png
 standingLeft.png
 standingRight.png
