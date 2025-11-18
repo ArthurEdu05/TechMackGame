@@ -24,11 +24,14 @@ public class Level2 extends Level {
 
     @Override
     protected void setupObjects() {
+        // energia para este nível
+        energy = new Energy(20f, 100f);
         // player
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 1, 0.5f, 1f, viewport);
-        // energia para este nível
-        energy = new Energy(15f, 120f);
+        player.setEnergy(energy);
+        
+        
 
         // caminhão
         float truckWidth = 4f;
@@ -63,6 +66,6 @@ public class Level2 extends Level {
 
     @Override
     protected int getRequiredScore() {
-        return 25;  // pontos necessários para completar
+        return 50;  // pontos necessários para completar
     }
 }

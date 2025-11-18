@@ -32,7 +32,7 @@ public class Level1 extends Level {
 
         // energia para este nível
         float maxEnergy = 100f; // máximo
-        float baseEnergy = maxEnergy * 0.1f; // começa com 50% 
+        float baseEnergy = maxEnergy * 0.15f; // começa com 25% 
         energy = new Energy(baseEnergy, maxEnergy);
 
         // player (depende da energia)
