@@ -61,7 +61,7 @@ public class Level2 extends Level {
 
     @Override
     public Music getIntroSound() {
-        return Gdx.audio.newMusic(Gdx.files.internal("intro2Sound.mp3"));
+        return Gdx.audio.newMusic(Gdx.files.internal("DistantCity.mp3"));
     }
 
     @Override

@@ -250,7 +250,7 @@ public abstract class Level {
         // intro
         if (showingIntro) {
             introTimer += delta;
-            if (introTimer >= 3f) { // mostra o texto por 3 segundos
+            if (introTimer >= 6.8f) { // mostra o texto por 6.8 segundos
                 showingIntro = false;
                 showingCountdown = true;
                 introLabel.setVisible(false);

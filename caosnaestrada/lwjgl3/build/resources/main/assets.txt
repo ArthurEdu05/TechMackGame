@@ -1,4 +1,6 @@
 .gitkeep
+Desert.mp3
+DistantCity.mp3
 GameOver.png
 Run1.png
 Run2.png
@@ -28,6 +30,8 @@ RunTruck5.png
 RunTruck6.png
 RunTruck7.png
 RunTruck8.png
+SirenCity.mp3
+Win.png
 abajur.png
 backgroundlvl1.png
 backgroundlvl2.png
@@ -47,9 +51,6 @@ fellSound1.mp3
 gameOver.mp3
 getObject.mp3
 goSound.mp3
-intro1Sound.mp3
-intro2Sound.mp3
-intro3Sound.mp3
 menuBackground.png
 menuButton.png
 notebook.png
@@ -66,3 +67,4 @@ standingLeft.png
 standingRight.png
 travesseiro.png
 truckSound.mp3
+win.mp3
