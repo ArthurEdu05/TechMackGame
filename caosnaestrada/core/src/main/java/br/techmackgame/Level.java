@@ -100,16 +100,16 @@ public abstract class Level {
 
         uiStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         energyLabel = new Label("Energia: 0%", style);
-        energyLabel.setPosition(10, Gdx.graphics.getHeight() - 30); // canto superior esquerdo
+        energyLabel.setPosition(10, Gdx.graphics.getHeight() - 60); // canto superior esquerdo
         uiStage.addActor(energyLabel);
 
         scoreLabel = new Label("Pontuação: 0", style);
-        scoreLabel.setPosition(10, Gdx.graphics.getHeight() - 55); // um pouco abaixo da energia
+        scoreLabel.setPosition(10, Gdx.graphics.getHeight() - 80); // um pouco abaixo da energia
         uiStage.addActor(scoreLabel);
 
         int meta = getRequiredScore();
         goalLabel = new Label("Meta: " + meta, style);
-        goalLabel.setPosition(10, Gdx.graphics.getHeight() - 80);
+        goalLabel.setPosition(10, Gdx.graphics.getHeight() - 100);
         uiStage.addActor(goalLabel);
         // intro texto
         introText = getIntroText();
@@ -186,7 +186,7 @@ public abstract class Level {
         pauseButton.setSize(80, 80);
 
         // define posição em pixels, no canto superior direito
-        pauseButton.setPosition(Gdx.graphics.getWidth() - 90, Gdx.graphics.getHeight() - 90);
+        pauseButton.setPosition(Gdx.graphics.getWidth() - 90, Gdx.graphics.getHeight() - 100);
 
         // adiciona ao stage
         uiStage.addActor(pauseButton);
