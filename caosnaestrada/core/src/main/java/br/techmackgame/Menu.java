@@ -23,6 +23,7 @@ public class Menu {
     private Texture quitConfirmationTexture;
     private Texture confirmQuitTexture;
     private Texture cancelTexture;
+    protected Texture characterTexture;
 
     private Image backgroundImage;
     private Image playButton;
@@ -32,6 +33,7 @@ public class Menu {
     private Image quitConfirmationDialog;
     private Image confirmQuitButton;
     private Image cancelButton;
+    protected Image characterImage;
 
     private Label levelLabel;
     private BitmapFont font;
@@ -45,9 +47,9 @@ public class Menu {
     private boolean exitClicked = false;
     private boolean resumeClicked = false;
     private boolean restartClicked = false;
-    private boolean playFromPauseClicked = false;
-    private boolean isPauseMenu = false;
-
+    private Texture menuTexture;
+    private Image menuButton;
+    private boolean goToMenuClicked = false;
 
     public Menu() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -122,10 +124,13 @@ public class Menu {
 
         if (extraButtons) {
 
-             isPauseMenu = true;
             // texturas extras
             restartTexture = new Texture("restartButton.png");
             resumeTexture = new Texture("resumeButton.png");
+            menuTexture = new Texture("menuButton.png");
+
+            playButton.setVisible(false);
+            levelLabel.setVisible(false);
 
             // reorganiza todos os botões na grade 2x2
             setupExtraButtons();
@@ -166,6 +171,7 @@ public class Menu {
                     levelLabel.setVisible(true);
                     if (resumeButton != null) resumeButton.setVisible(true);
                     if (restartButton != null) restartButton.setVisible(true);
+                     if (menuButton != null) menuButton.setVisible(true);
 
                     return;
                 }
@@ -177,12 +183,8 @@ public class Menu {
                     
                     clickSound.play(0.7f);
 
-                    if (isPauseMenu) {
-                        playFromPauseClicked = true;   // jogar a partir do pause
-                    } else {
-                        playClicked = true;            // jogar no menu inicial
-                    }
-
+                    playClicked = true; // jogar no menu inicial
+                    
                     return;
                 }
 
@@ -197,6 +199,7 @@ public class Menu {
                     levelLabel.setVisible(false);
                     if (resumeButton != null) resumeButton.setVisible(false);
                     if (restartButton != null) restartButton.setVisible(false);
+                    if (menuButton != null) menuButton.setVisible(false);
 
                     quitConfirmationDialog.setVisible(true);
                     confirmQuitButton.setVisible(true);
@@ -218,6 +221,15 @@ public class Menu {
                     y >= restartButton.getY() && y <= restartButton.getY() + restartButton.getHeight()) {
                     clickSound.play(0.7f);
                     restartClicked = true;
+                    return;
+                }
+
+                if (menuButton != null &&
+                    x >= menuButton.getX() && x <= menuButton.getX() + menuButton.getWidth() &&
+                    y >= menuButton.getY() && y <= menuButton.getY() + menuButton.getHeight()) {
+
+                    clickSound.play(0.7f);
+                    goToMenuClicked = true;
                     return;
                 }
 
@@ -262,8 +274,8 @@ public class Menu {
         return restartClicked;
     }
 
-    public boolean shouldPlayFromPause() {
-        return playFromPauseClicked;
+    public boolean shouldReturnToMenu() {
+        return goToMenuClicked;
     }
 
     public int getSelectedLevel() {
@@ -304,8 +316,28 @@ public class Menu {
         float col2X = centerX + spacingX / 2;
         float col2Y = centerY + buttonHeight / 2;
 
-        playButton.setPosition(col2X, col2Y);
+        menuButton = new Image(menuTexture);
+        menuButton.setSize(buttonWidth, buttonHeight);
+        menuButton.setPosition(col2X, col2Y);
+        stage.addActor(menuButton);
+
         quitButton.setPosition(col2X, col2Y - (buttonHeight + spacingY));
+
+        // personagem
+        characterTexture = new Texture("sitCharacter.png"); // substitua pelo nome do arquivo
+        characterImage = new Image(characterTexture);
+
+        float characterWidth = 200; // ajuste conforme quiser
+        float characterHeight = 300;
+
+        characterImage.setSize(characterWidth, characterHeight);
+
+        // posição: à esquerda da coluna 1
+        float characterX = col1X - characterWidth + 80; // 20px de espaçamento
+        float characterY = col1Y - characterHeight + 20;
+
+        characterImage.setPosition(characterX, characterY);
+        stage.addActor(characterImage);
     }
 
     public void dispose() {

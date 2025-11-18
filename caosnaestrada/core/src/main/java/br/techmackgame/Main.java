@@ -116,9 +116,15 @@ public class Main implements ApplicationListener {
                     return;
                 }
 
-                if (currentLevel.wantsPlayFromPause) {
+                // voltar pro menu
+
+                if (currentLevel.wantsReturnToMenu) {
                     currentLevel.dispose();
-                    currentLevel = createLevelByIndex(currentLevelIndex); // cria de novo
+                    currentLevel = null;
+
+                    gameStarted = false;
+                    menu = new Menu();      // volta ao menu inicial
+                    menu.setSelectedLevel(0);
                     return;
                 }
 
