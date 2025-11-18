@@ -31,6 +31,7 @@ public class Main implements ApplicationListener {
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
         menu = new Menu();
+        menu.activate();
 
         // começa selecionando Level 1 no menu
         menu.setSelectedLevel(0);
@@ -80,6 +81,7 @@ public class Main implements ApplicationListener {
 
                     gameStarted = false;
                     menu = new Menu();
+                    menu.activate();
                     menu.setSelectedLevel(0);
 
                     return;
@@ -140,6 +142,7 @@ public class Main implements ApplicationListener {
                                 // volta pro menu
                                 gameStarted = false;
                                 menu = new Menu();
+                                menu.activate();
                                 menu.setSelectedLevel(0);
 
                                 return;
@@ -180,6 +183,7 @@ public class Main implements ApplicationListener {
 
                     gameStarted = false;
                     menu = new Menu();      // volta ao menu inicial
+                    menu.activate();
                     menu.setSelectedLevel(0);
                     return;
                 }

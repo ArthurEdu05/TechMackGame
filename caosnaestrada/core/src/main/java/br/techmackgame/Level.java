@@ -2,6 +2,7 @@
 package br.techmackgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -84,6 +85,7 @@ public abstract class Level {
     protected Image pauseButton;
     public boolean wantsRestart = false;
     public boolean wantsReturnToMenu = false;
+    
 
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
@@ -183,11 +185,13 @@ public abstract class Level {
 
         // adiciona ao stage
         uiStage.addActor(pauseButton);
-    // inicializa GameOverManager (não transfere propriedade das textures)
-    gameOverManager = new GameOverManager(viewport, spriteBatch, gameOverBg, exitButton,
-        exitX, exitY, exitW, exitH, gameOverSound, truckSound, introSound);
-        
-    }
+        // registra o stage do level como input processor por padrão
+        Gdx.input.setInputProcessor(uiStage);
+        // inicializa GameOverManager (não transfere propriedade das textures)
+        gameOverManager = new GameOverManager(viewport, spriteBatch, gameOverBg, exitButton,
+            exitX, exitY, exitW, exitH, gameOverSound, truckSound, introSound);
+            
+        }
 
     protected abstract int getRequiredScore();
 
@@ -205,6 +209,22 @@ public abstract class Level {
 
         // pause
 
+        // permitir abrir/fechar pause com ESC
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (!paused) {
+                paused = true;
+                allowPlayerMovement = false;
+                pauseMenu = new Menu(true);
+                pauseMenu.activate();
+            } else if (paused && pauseMenu != null) {
+                paused = false;
+                allowPlayerMovement = true;
+                pauseMenu.dispose();
+                pauseMenu = null;
+                Gdx.input.setInputProcessor(uiStage);
+            }
+        }
+
         if (!paused && Gdx.input.justTouched()) {
             Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
             touchPos = uiStage.screenToStageCoordinates(touchPos);
@@ -214,6 +234,7 @@ public abstract class Level {
                 paused = true;
                 allowPlayerMovement = false;
                 pauseMenu = new Menu(true);
+                pauseMenu.activate();
             }
         }
 
@@ -225,12 +246,14 @@ public abstract class Level {
                 allowPlayerMovement = true;
                 pauseMenu.dispose();
                 pauseMenu = null;
+                Gdx.input.setInputProcessor(uiStage);
             } else if (pauseMenu.shouldRestartGame()) { // clicou em reiniciar
                 paused = false;
                 allowPlayerMovement = true;
                 wantsRestart = true;
                 pauseMenu.dispose();
                 pauseMenu = null;
+                Gdx.input.setInputProcessor(uiStage);
             } else if (pauseMenu.shouldReturnToMenu()) { // clicou em rogar
                 wantsReturnToMenu = true;
             } else if (pauseMenu.shouldExitGame()) { // clicou em sair
@@ -437,10 +460,7 @@ public abstract class Level {
         }
     }
 
-    /**
-     * Retorna a quantidade de pontos associada a uma textura de objeto.
-     * Mantém a mesma regra anterior (abajur=1, brinquedos=2, notebook=3, roupas=4, travesseiro=5).
-     */
+    // retorna quantidade de pontos
     protected int pointsForTexture(Texture texture) {
         if (texture == null) return 1;
         String s = texture.toString();
@@ -453,8 +473,8 @@ public abstract class Level {
     }
 
     /**
-     * Atualiza a pontuação adicionando o delta. Usa-se delta negativo para penalidades.
-     * Centraliza efeitos colaterais como atualização do label e checagem de game over.
+     * atualiza a pontuação adicionando o delta, usa delta negativo para penalidades
+     * centraliza efeitos colaterais
      */
     protected void addScore(int delta) {
         score += delta;

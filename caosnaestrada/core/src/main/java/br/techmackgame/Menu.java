@@ -56,7 +56,6 @@ public class Menu {
 
     public Menu() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        Gdx.input.setInputProcessor(stage);
 
         // texturas
         backgroundTexture = new Texture("menuBackground.png");
@@ -361,5 +360,14 @@ public class Menu {
         if (resumeTexture != null) resumeTexture.dispose();
         font.dispose();
         if (clickSound != null) clickSound.dispose();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    // ativa menu pra receber o input
+    public void activate() {
+        Gdx.input.setInputProcessor(stage);
     }
 }
