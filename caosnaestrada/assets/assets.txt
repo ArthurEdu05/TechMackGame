@@ -1,5 +1,5 @@
 .gitkeep
-Desert.mp3
+DesertTest2.mp3
 DistantCity.mp3
 GameOver.png
 Run1.png
@@ -30,7 +30,6 @@ RunTruck5.png
 RunTruck6.png
 RunTruck7.png
 RunTruck8.png
-SirenCity.mp3
 Win.png
 abajur.png
 backgroundlvl1.png
