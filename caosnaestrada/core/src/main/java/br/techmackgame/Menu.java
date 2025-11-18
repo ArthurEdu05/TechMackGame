@@ -129,6 +129,7 @@ public class Menu {
             menuTexture = new Texture("menuButton.png");
 
             playButton.setVisible(false);
+            levelLabel.setVisible(false);
 
             // reorganiza todos os botões na grade 2x2
             setupExtraButtons();
