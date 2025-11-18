@@ -23,6 +23,7 @@ public class Menu {
     private Texture quitConfirmationTexture;
     private Texture confirmQuitTexture;
     private Texture cancelTexture;
+    protected Texture characterTexture;
 
     private Image backgroundImage;
     private Image playButton;
@@ -32,6 +33,7 @@ public class Menu {
     private Image quitConfirmationDialog;
     private Image confirmQuitButton;
     private Image cancelButton;
+    protected Image characterImage;
 
     private Label levelLabel;
     private BitmapFont font;
@@ -48,7 +50,6 @@ public class Menu {
     private Texture menuTexture;
     private Image menuButton;
     private boolean goToMenuClicked = false;
-
 
     public Menu() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -321,6 +322,22 @@ public class Menu {
         stage.addActor(menuButton);
 
         quitButton.setPosition(col2X, col2Y - (buttonHeight + spacingY));
+
+        // personagem
+        characterTexture = new Texture("sitCharacter.png"); // substitua pelo nome do arquivo
+        characterImage = new Image(characterTexture);
+
+        float characterWidth = 200; // ajuste conforme quiser
+        float characterHeight = 300;
+
+        characterImage.setSize(characterWidth, characterHeight);
+
+        // posição: à esquerda da coluna 1
+        float characterX = col1X - characterWidth + 80; // 20px de espaçamento
+        float characterY = col1Y - characterHeight + 20;
+
+        characterImage.setPosition(characterX, characterY);
+        stage.addActor(characterImage);
     }
 
     public void dispose() {

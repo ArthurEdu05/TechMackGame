@@ -61,6 +61,7 @@ quitConfirmation.png
 restartButton.png
 resumeButton.png
 roupas.png
+sitCharacter.png
 standingLeft.png
 standingRight.png
 travesseiro.png
