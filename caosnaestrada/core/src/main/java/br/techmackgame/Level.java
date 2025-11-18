@@ -152,7 +152,7 @@ public abstract class Level {
         goSound = Gdx.audio.newSound(Gdx.files.internal("goSound.mp3"));
 
         introSound = getIntroSound();
-        introSound.setLooping(false);  // mantém tocando até o jogo começar
+        introSound.setLooping(true);  // mantém tocando até o jogo começar
         introSound.setVolume(0.6f);   // volume ajustável
         introSound.play();            // toca assim que entra na intro
 
