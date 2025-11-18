@@ -44,6 +44,7 @@ public abstract class Level {
     protected Stage uiStage;
     protected Label energyLabel;
     protected Label scoreLabel;
+    protected Label goalLabel;
     protected int score = 0; 
 
     // intro e contagem
@@ -106,6 +107,10 @@ public abstract class Level {
         scoreLabel.setPosition(10, Gdx.graphics.getHeight() - 55); // um pouco abaixo da energia
         uiStage.addActor(scoreLabel);
 
+        int meta = getRequiredScore();
+        goalLabel = new Label("Meta: " + meta, style);
+        goalLabel.setPosition(10, Gdx.graphics.getHeight() - 80);
+        uiStage.addActor(goalLabel);
         // intro texto
         introText = getIntroText();
         Label.LabelStyle introStyle = new Label.LabelStyle(font, Color.WHITE);
@@ -152,7 +157,7 @@ public abstract class Level {
         goSound = Gdx.audio.newSound(Gdx.files.internal("goSound.mp3"));
 
         introSound = getIntroSound();
-        introSound.setLooping(true);  // mantém tocando até o jogo começar
+        introSound.setLooping(true); 
         introSound.setVolume(0.6f);   // volume ajustável
         introSound.play();            // toca assim que entra na intro
 
