@@ -24,11 +24,15 @@ public class Level3 extends Level {
 
     @Override
     protected void setupObjects() {
+        // energia para este nível
+        energy = new Energy(15f, 100f);
+        
         // player
         Texture playerTexture = new Texture("standingRight.png");
         player = new Player(playerTexture, 1, 0.5f, 0.5f, 1f, viewport);
-        // energia para este nível
-        energy = new Energy(10f, 150f);
+         player.setEnergy(energy);
+
+        
 
         // caminhão
         float truckWidth = 4f;
@@ -58,11 +62,11 @@ public class Level3 extends Level {
 
     @Override
     public Music getIntroSound() {
-        return Gdx.audio.newMusic(Gdx.files.internal("intro3Sound.mp3"));
+        return Gdx.audio.newMusic(Gdx.files.internal("SirenCity.mp3"));
     }
 
     @Override
     protected int getRequiredScore() {
-        return 40;  // pontos necessários para completar
+        return 75;  // pontos necessários para completar
     }
 }
