@@ -89,8 +89,9 @@ public class FallingObject extends GameObject {
     }
 
     public void deactivate() {
-        active = false;
-        collected = false;
+    active = false;
+    collected = false;
+    hitGround = false;
     }
 
     public Texture getTexture() {

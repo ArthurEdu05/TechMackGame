@@ -75,6 +75,7 @@ public abstract class Level {
     protected boolean exitGameOver = false;
     protected Sound gameOverSound;
     protected boolean gameOverSoundPlayed = false;
+    protected GameOverManager gameOverManager;
 
     // pause
     protected boolean paused = false;
@@ -182,6 +183,9 @@ public abstract class Level {
 
         // adiciona ao stage
         uiStage.addActor(pauseButton);
+    // inicializa GameOverManager (não transfere propriedade das textures)
+    gameOverManager = new GameOverManager(viewport, spriteBatch, gameOverBg, exitButton,
+        exitX, exitY, exitW, exitH, gameOverSound, truckSound, introSound);
         
     }
 
@@ -236,20 +240,10 @@ public abstract class Level {
             return; // não atualiza nada do level enquanto pausado
         }
 
-        // se game over, detectar clique no botão sair
-        if (gameOver) {
-            if (Gdx.input.justTouched()) {
-                // converter coordenadas
-                float x = viewport.unproject(new com.badlogic.gdx.math.Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).x;
-                float y = viewport.unproject(new com.badlogic.gdx.math.Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).y;
-
-                // verificar clique no botão
-                if (x >= exitX && x <= exitX + exitW &&
-                    y >= exitY && y <= exitY + exitH) {
-
-                   exitGameOver = true;
-                }
-            }
+        // delega o comportamento de tela de game over ao manager
+        if (gameOverManager != null && gameOverManager.isGameOver()) {
+            gameOverManager.update(delta);
+            if (gameOverManager.shouldExit()) exitGameOver = true;
             return;
         }
 
@@ -333,6 +327,8 @@ public abstract class Level {
                 float startY = truck.getY() + truck.getHeight();
 
                 fallingObject = new FallingObject(randomTexture, startX, startY, 0.5f, 0.5f);
+                // atribui pontos ao objeto já no spawn (usado tanto em coleta quanto na penalidade)
+                fallingObject.setPoints(pointsForTexture(randomTexture));
                 fallingObject.setImpactSound(impactSound);
                 if (objectSounds != null && objectSounds.size > 0) {
                     Sound randomSound = objectSounds.random();
@@ -353,43 +349,41 @@ public abstract class Level {
                 collectSound.play(0.8f); 
             }
 
-            // caiu no chão perde pontos
-            if (fallingObject != null && fallingObject.hasHitGround()) {
+            // caiu no chão perde pontos (penalidade = pontos do próprio objeto)
+            if (fallingObject.hasHitGround()) {
+               // garante que o objeto tem pontos definidos
+            if (fallingObject.getPoints() <= 0) {
+                fallingObject.setPoints(pointsForTexture(fallingObject.getTexture()));
+            }
 
-                // tira pontos
-                score -= 2; 
-                scoreLabel.setText("Pontuação: " + score);
+            // atualiza pontuação usando helper (delta negativo para penalidade)
+            addScore(-fallingObject.getPoints());
 
-                System.out.println("Objeto caiu no chão! Pontuação: " + score);
-
+                // debug: mostra valor antes e depois
+            System.out.println("Pontos perdidos: " + fallingObject.getPoints() + " | Total: " + score);
                 fallingObject.deactivate();
             }
         }
 
         if (fallingObject != null && fallingObject.isCollected()) {
-        // define pontos conforme o tipo do objeto
-        Texture texture = fallingObject.getTexture();
-        if (texture.toString().contains("abajur")) fallingObject.setPoints(1);
-        else if (texture.toString().contains("brinquedos")) fallingObject.setPoints(2);
-        else if (texture.toString().contains("notebook")) fallingObject.setPoints(3);
-        else if (texture.toString().contains("roupas")) fallingObject.setPoints(4);
-        else if (texture.toString().contains("travesseiro")) fallingObject.setPoints(5);
-        else fallingObject.setPoints(1);
+            // garante que o objeto tem pontos definidos
+            if (fallingObject.getPoints() <= 0) {
+                fallingObject.setPoints(pointsForTexture(fallingObject.getTexture()));
+            }
 
-        // soma os pontos
-        score += fallingObject.getPoints();
-        scoreLabel.setText("Pontuação: " + score);
+            // soma os pontos
+            addScore(fallingObject.getPoints());
 
-        // verifica se completou o nível
-        if (score >= getRequiredScore() && !levelComplete) {
-            levelComplete = true;
-            truckSound.stop();
-        }
+            // verifica se completou o nível
+            if (score >= getRequiredScore() && !levelComplete) {
+                levelComplete = true;
+                truckSound.stop();
+            }
 
-        System.out.println("Pontos ganhos: " + fallingObject.getPoints() + " | Total: " + score);
+            System.out.println("Pontos ganhos: " + fallingObject.getPoints() + " | Total: " + score);
 
-        // desativa o objeto após contabilizar
-        fallingObject.deactivate();
+            // desativa o objeto após contabilizar
+            fallingObject.deactivate();
         }
 
         // fundo só move se player andou
@@ -405,20 +399,7 @@ public abstract class Level {
             truckSound.play();
         }
 
-        // game over
-        if (!gameOver && score < 0) {
-            gameOver = true;
-            allowPlayerMovement = false;
-            truckSound.stop();
-            introSound.stop();
-        
-            if (!gameOverSoundPlayed && gameOverSound != null) {
-                gameOverSound.play(1.0f); // toca o som
-                gameOverSoundPlayed = true; // garante que não toque novamente
-            }
-
-            System.out.println("GAME OVER!");
-        }
+    
     }
 
     public void render() {
@@ -446,30 +427,45 @@ public abstract class Level {
 
         spriteBatch.end();
 
-        // tela de game over
-        if (gameOver) {
-
-            viewport.apply(); // garante que a viewport está atualizada
-            spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
-
-            spriteBatch.begin();
-
-            float goWidth = viewport.getWorldWidth() * 0.7f;  // 70% da largura da tela
-            float goHeight = viewport.getWorldHeight() * 0.7f; // 70% da altura da tela
-            float goX = (viewport.getWorldWidth() - goWidth) / 2f;  // centraliza horizontalmente
-            float goY = (viewport.getWorldHeight() - goHeight) / 2f; // centraliza verticalmente
-
-            spriteBatch.draw(gameOverBg, goX, goY, goWidth, goHeight);
-            // botão sair
-            spriteBatch.draw(exitButton, exitX, exitY, exitW, exitH);
-
-            spriteBatch.end();
-        }
+    // delega render de game over ao manager
+    if (gameOverManager != null) gameOverManager.render();
 
         // pause
 
         if (paused && pauseMenu != null) {
             pauseMenu.render();
+        }
+    }
+
+    /**
+     * Retorna a quantidade de pontos associada a uma textura de objeto.
+     * Mantém a mesma regra anterior (abajur=1, brinquedos=2, notebook=3, roupas=4, travesseiro=5).
+     */
+    protected int pointsForTexture(Texture texture) {
+        if (texture == null) return 1;
+        String s = texture.toString();
+        if (s.contains("abajur")) return 1;
+        if (s.contains("brinquedos")) return 2;
+        if (s.contains("notebook")) return 3;
+        if (s.contains("roupas")) return 4;
+        if (s.contains("travesseiro")) return 5;
+        return 1;
+    }
+
+    /**
+     * Atualiza a pontuação adicionando o delta. Usa-se delta negativo para penalidades.
+     * Centraliza efeitos colaterais como atualização do label e checagem de game over.
+     */
+    protected void addScore(int delta) {
+        score += delta;
+        if (scoreLabel != null) scoreLabel.setText("Pontuação: " + score);
+
+        // se a pontuação ficar negativa, dispara game over via manager
+        if (!gameOver && score < 0) {
+            gameOver = true;
+            allowPlayerMovement = false;
+            if (gameOverManager != null) gameOverManager.triggerGameOver();
+            System.out.println("GAME OVER!");
         }
     }
 
@@ -513,5 +509,6 @@ public abstract class Level {
         if (exitButton != null) exitButton.dispose();
 
         if (gameOverSound != null) gameOverSound.dispose();
+    if (gameOverManager != null) gameOverManager.dispose();
     }
 }
