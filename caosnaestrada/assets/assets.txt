@@ -51,6 +51,7 @@ intro1Sound.mp3
 intro2Sound.mp3
 intro3Sound.mp3
 menuBackground.png
+menuButton.png
 notebook.png
 pauseButton.png
 playButton.png

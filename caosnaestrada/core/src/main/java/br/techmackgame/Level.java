@@ -82,7 +82,7 @@ public abstract class Level {
     protected Texture pauseButtonTexture;
     protected Image pauseButton;
     public boolean wantsRestart = false;
-    public boolean wantsPlayFromPause = false;
+    public boolean wantsReturnToMenu = false;
 
     
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
@@ -227,12 +227,8 @@ public abstract class Level {
                 wantsRestart = true;
                 pauseMenu.dispose();
                 pauseMenu = null;
-            } else if (pauseMenu.shouldPlayFromPause()) { // clicou em rogar
-                paused = false;
-                allowPlayerMovement = true;
-                wantsPlayFromPause = true;  
-                pauseMenu.dispose();
-                pauseMenu = null;
+            } else if (pauseMenu.shouldReturnToMenu()) { // clicou em rogar
+                wantsReturnToMenu = true;
             } else if (pauseMenu.shouldExitGame()) { // clicou em sair
                 Gdx.app.exit();
             }

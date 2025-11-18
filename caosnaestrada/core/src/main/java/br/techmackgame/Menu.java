@@ -45,8 +45,9 @@ public class Menu {
     private boolean exitClicked = false;
     private boolean resumeClicked = false;
     private boolean restartClicked = false;
-    private boolean playFromPauseClicked = false;
-    private boolean isPauseMenu = false;
+    private Texture menuTexture;
+    private Image menuButton;
+    private boolean goToMenuClicked = false;
 
 
     public Menu() {
@@ -122,10 +123,12 @@ public class Menu {
 
         if (extraButtons) {
 
-             isPauseMenu = true;
             // texturas extras
             restartTexture = new Texture("restartButton.png");
             resumeTexture = new Texture("resumeButton.png");
+            menuTexture = new Texture("menuButton.png");
+
+            playButton.setVisible(false);
 
             // reorganiza todos os botões na grade 2x2
             setupExtraButtons();
@@ -177,12 +180,8 @@ public class Menu {
                     
                     clickSound.play(0.7f);
 
-                    if (isPauseMenu) {
-                        playFromPauseClicked = true;   // jogar a partir do pause
-                    } else {
-                        playClicked = true;            // jogar no menu inicial
-                    }
-
+                    playClicked = true; // jogar no menu inicial
+                    
                     return;
                 }
 
@@ -218,6 +217,15 @@ public class Menu {
                     y >= restartButton.getY() && y <= restartButton.getY() + restartButton.getHeight()) {
                     clickSound.play(0.7f);
                     restartClicked = true;
+                    return;
+                }
+
+                if (menuButton != null &&
+                    x >= menuButton.getX() && x <= menuButton.getX() + menuButton.getWidth() &&
+                    y >= menuButton.getY() && y <= menuButton.getY() + menuButton.getHeight()) {
+
+                    clickSound.play(0.7f);
+                    goToMenuClicked = true;
                     return;
                 }
 
@@ -262,8 +270,8 @@ public class Menu {
         return restartClicked;
     }
 
-    public boolean shouldPlayFromPause() {
-        return playFromPauseClicked;
+    public boolean shouldReturnToMenu() {
+        return goToMenuClicked;
     }
 
     public int getSelectedLevel() {
@@ -304,7 +312,11 @@ public class Menu {
         float col2X = centerX + spacingX / 2;
         float col2Y = centerY + buttonHeight / 2;
 
-        playButton.setPosition(col2X, col2Y);
+        menuButton = new Image(menuTexture);
+        menuButton.setSize(buttonWidth, buttonHeight);
+        menuButton.setPosition(col2X, col2Y);
+        stage.addActor(menuButton);
+
         quitButton.setPosition(col2X, col2Y - (buttonHeight + spacingY));
     }
 
