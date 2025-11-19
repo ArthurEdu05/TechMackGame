@@ -135,7 +135,7 @@ public class Menu {
             playButton.setVisible(false);
             levelLabel.setVisible(false);
 
-            // reorganiza todos os botões na grade 2x2
+            // reorganiza todos os botões 2x2
             setupExtraButtons();
         }
     }
@@ -169,9 +169,7 @@ public class Menu {
 
 
                     backgroundImage.setVisible(true);
-                    // somente reexibe o botão de play e o label de nível se NÃO estivermos
-                    // no modo de menu de pausa (extraButtonsMode). No menu de pausa, o
-                    // botão de play deve permanecer invisível.
+                    // somente reexibe o botão de play e o label de nível se NÃO estivermos no modo de menu de pausa (extraButtonsMode). No menu de pausa, o botão de play deve permanecer invisível.
                     if (!extraButtonsMode) {
                         playButton.setVisible(true);
                         levelLabel.setVisible(true);
@@ -250,7 +248,7 @@ public class Menu {
                   
                     levelLabel.setText("< " + levels[currentLevel] + " >");
                 } else if (x >= levelLabel.getX() + levelLabel.getWidth() - arrowWidth &&
-                           x <= levelLabel.getX() + levelLabel.getWidth()) { // seta direita
+                           x <= levelLabel.getX() + levelLabel.getWidth()) { 
                     clickSound.play(0.7f);
                     currentLevel++;
                     if (currentLevel >= levels.length) currentLevel = 0;
@@ -332,16 +330,16 @@ public class Menu {
         quitButton.setPosition(col2X, col2Y - (buttonHeight + spacingY));
 
         // personagem
-        characterTexture = new Texture("sitCharacter.png"); // substitua pelo nome do arquivo
+        characterTexture = new Texture("sitCharacter.png"); 
         characterImage = new Image(characterTexture);
 
-        float characterWidth = 200; // ajuste conforme quiser
+        float characterWidth = 200; 
         float characterHeight = 300;
 
         characterImage.setSize(characterWidth, characterHeight);
 
-        // posição: à esquerda da coluna 1
-        float characterX = col1X - characterWidth + 80; // 20px de espaçamento
+        
+        float characterX = col1X - characterWidth + 80;
         float characterY = col1Y - characterHeight + 20;
 
         characterImage.setPosition(characterX, characterY);

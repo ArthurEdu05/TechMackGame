@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 /// Esta é a classe base. Ela define as propriedades e comportamentos que são comuns a todos os objetos do nosso jogo
-///  Atributos:
-/// Sprite é a representação visual do objeto.
-/// Rectangle é a área de colisão do objeto.
+/// Atributos: Sprite é a representação visual do objeto. Rectangle é a área de colisão do objeto.
+
 
 public abstract class GameObject {
     protected Sprite objectSprite;
@@ -44,6 +43,7 @@ public abstract class GameObject {
 
     public void translate(float dx, float dy) {
         objectSprite.translate(dx, dy);
+        //atualiza a hitbox apos movimento
         bounds.setPosition(objectSprite.getX(), objectSprite.getY());
     }
 

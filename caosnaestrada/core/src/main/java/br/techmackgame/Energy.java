@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-
+//O jogador deve alternar teclas para simular o ato de pedalar e gerar energia para o personagem correr em nosso jogo.
 public class Energy {
 
     // valores de energia: 
@@ -18,16 +18,16 @@ public class Energy {
     private long lastAPress = 0L;
     private long lastDPress = 0L;
 
-    // parâmetros para converter tempo entre presses em intensidade
+    
     private final float minInterval = 0.05f; 
     private final float maxInterval = 1.0f;  
     private final float intensityScale = 0.6f; 
 
-    // ajustáveis por nivel?
+    // ajustáveis por nivel
     private final float pedalMax = 10f;       
     private final float pedalDecay = 2.5f;    
 
-    // valor convertido em energia por segundo
+    
     private final float energyGainPerPower = 0.4f;
 
     // decaimento da energia por segundo 
@@ -57,7 +57,7 @@ public class Energy {
         // Se A ou D foram pressionadas, calcula a intensidade baseada no tempo entre essa e a última pressionada da mesma tecla.
         if (aJust) {
             long now = TimeUtils.millis();
-            float intensity = 0.5f; // valor base caso seja a primeira pressão
+            float intensity = 0.5f; 
             if (lastAPress != 0L) {
                 float interval = MathUtils.clamp((now - lastAPress) / 1000f, minInterval, maxInterval);
                 intensity = MathUtils.clamp(intensityScale / interval, 0.1f, 3f);

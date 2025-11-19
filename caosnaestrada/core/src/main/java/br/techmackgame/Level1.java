@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
+//Classe filha de level responsavel pelo level 1 
 public class Level1 extends Level {
 
     public Level1(FitViewport viewport, SpriteBatch spriteBatch) {
@@ -19,6 +19,7 @@ public class Level1 extends Level {
         return 4f;
     }
 
+    //ambientação da fase 1
     @Override
     protected void setupBackground() {
         backgroundTexture = new Texture("backgroundlvl1.png");
@@ -31,7 +32,7 @@ public class Level1 extends Level {
     protected void setupObjects() {
 
         // energia para este nível
-        float maxEnergy = 100f; // máximo
+        float maxEnergy = 100f; 
         float baseEnergy = maxEnergy * 0.15f; // começa com 25% 
         energy = new Energy(baseEnergy, maxEnergy);
 
@@ -56,6 +57,7 @@ public class Level1 extends Level {
         objectTextures.add(new Texture("travesseiro.png"));
     }
 
+    //história de intro
     @Override
     protected String getIntroText() {
         return "Seu caminhão de mudança está partindo, mas a porta traseira se abriu no meio da estrada! Recolha seus pertences e mantenha sua energia!";

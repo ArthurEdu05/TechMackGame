@@ -17,17 +17,29 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+/**
+ * CLASSE ABSTRATA:
+ * Esta classe define o esqueleto de qualquer fase do jogo. 
+ * Ela gerencia o "Game Loop" principal, separando a lógica (update) da renderização (draw).
+ * * Suas responsabilidades incluem:
+ * - Gerenciar Entidades (Player, Truck, FallingObjects).
+ * - Controlar a Interface de Usuário (HUD).
+ * - Detectar colisões e aplicar regras de pontuação/energia.
+ * - Gerenciar estados globais: Intro -> Jogo -> Pause -> Game Over/Vitória.
+ */
+
 public abstract class Level {
     protected FitViewport viewport;
     protected SpriteBatch spriteBatch;
 
+    //entidades
     protected Player player;
     protected Truck truck;
     protected FallingObject fallingObject;
     protected Array<Texture> objectTextures;
-    // energia do jogador para este nível
     protected Energy energy;
 
+    // Parallax e Ambiente
     protected Texture backgroundTexture;
     protected float bgX1, bgX2;
     protected float bgWidthUnits = 8f;
@@ -91,7 +103,13 @@ public abstract class Level {
     protected int screenHeight = 0;
     
 
-    
+    /*
+     * INICIALIZAÇÃO DO MUNDO
+     * Configura tudo o que é necessário antes do primeiro frame.
+     * - Cria o HUD (Labels de Energia, Score, Meta).
+     * - Carrega sons e músicas.
+     * - Define a ordem inicial de desenho.
+     */
     public Level(FitViewport viewport, SpriteBatch spriteBatch) {
         this.viewport = viewport;
         this.spriteBatch = spriteBatch;
@@ -154,6 +172,7 @@ public abstract class Level {
         objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound5.mp3")));
         objectSounds.add(Gdx.audio.newSound(Gdx.files.internal("fallingSound6.mp3")));
 
+        //audios
         impactSound = Gdx.audio.newSound(Gdx.files.internal("fellSound1.mp3"));
         collectSound = Gdx.audio.newSound(Gdx.files.internal("getObject.mp3"));
         countSound = Gdx.audio.newSound(Gdx.files.internal("countSound.mp3"));
@@ -161,8 +180,8 @@ public abstract class Level {
 
         introSound = getIntroSound();
         introSound.setLooping(true); 
-        introSound.setVolume(0.6f);   // volume ajustável
-        introSound.play();            // toca assim que entra na intro
+        introSound.setVolume(0.6f);   
+        introSound.play();            
 
 
         if (player != null) {
@@ -198,7 +217,7 @@ public abstract class Level {
         screenHeight = Gdx.graphics.getHeight();
         // registra o stage do level como input processor por padrão
         Gdx.input.setInputProcessor(uiStage);
-        // inicializa GameOverManager (não transfere propriedade das textures)
+        // inicializa GameOverManager 
         gameOverManager = new GameOverManager(viewport, spriteBatch, gameOverBg, exitButton,
             exitX, exitY, exitW, exitH, gameOverSound, truckSound, introSound);
             
@@ -319,13 +338,13 @@ public abstract class Level {
 
         if (player != null) {
             if (!allowPlayerMovement) {
-                player.setStanding(); // mantém parado, sem responder às teclas
+                player.setStanding(); 
             } else {
                 player.update(delta);
             }
         }
 
-        // atualiza texto da UI com porcentagem 
+        
         if (energy != null && energyLabel != null) {
             float percent = (energy.getEnergy() / energy.getMaxEnergy()) * 100f;
             energyLabel.setText(String.format("Energia: %.0f%%", percent));
@@ -490,21 +509,21 @@ public abstract class Level {
         try {
             if (viewport != null) viewport.update(width, height, true);
         } catch (Exception e) {
-            // ignore
+            
         }
 
-        // atualiza viewport do uiStage: primeiro ajusta worldSize para pixels
+        // atualiza viewport do uiStage
         try {
             if (uiStage != null && uiStage.getViewport() != null) {
                 try {
                     uiStage.getViewport().setWorldSize(width, height);
                 } catch (Exception e) {
-                    // não suportado por alguns viewports - ignore
+                    
                 }
                 uiStage.getViewport().update(width, height, true);
             }
         } catch (Exception e) {
-            // ignore
+           
         }
 
         // reposiciona atores dependentes de pixels
@@ -519,7 +538,7 @@ public abstract class Level {
             }
             if (countdownLabel != null) countdownLabel.setPosition((width - countdownLabel.getWidth()) / 2f, height / 2f);
         } catch (Exception e) {
-            // ignore
+         
         }
 
         // atualiza viewport do pauseMenu (se estiver ativo)
@@ -530,13 +549,13 @@ public abstract class Level {
                     try {
                         pm.getViewport().setWorldSize(width, height);
                     } catch (Exception e) {
-                        // ignore
+                      
                     }
                     pm.getViewport().update(width, height, true);
                 }
             }
         } catch (Exception e) {
-            // ignore
+          
         }
     }
 
@@ -553,7 +572,6 @@ public abstract class Level {
     }
 
     // atualiza a pontuação adicionando o delta, usa delta negativo para penalidades
-    // centraliza efeitos colaterais
     protected void addScore(int delta) {
         score += delta;
         if (scoreLabel != null) scoreLabel.setText("Pontuação: " + score);

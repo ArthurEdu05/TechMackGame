@@ -1,3 +1,11 @@
+/**
+ * Esta classe representa os pertences que caem do caminhão. 
+ * Ela estende GameObject para herdar posição e renderização, mas adiciona:
+ * - Física de projétil (gravidade e arremesso).
+ * - Rotação visual.
+ * - Detecção de colisão com o chão.
+ */
+
 
 package br.techmackgame;
 
@@ -12,7 +20,7 @@ public class FallingObject extends GameObject {
     private float velocityY;
     private float gravity = -9.8f; // aceleração para baixo
     private boolean active = true;
-    private float groundY = 1f; // altura do chão 
+    private float groundY = 1f; // altura do chão onde o objeto é destruido
     private float rotationSpeed; // velocidade de rotação 
 
     // controle de pontuação e coleta
@@ -27,7 +35,7 @@ public class FallingObject extends GameObject {
         reset(startX, startY);
     }
 
-    // novo arco aleatório a partir da posição inicial 
+    // novo arco aleatório a partir da posição inicial (caminhão)
     public void reset(float startX, float startY) {
         objectSprite.setPosition(startX, startY);
         bounds.setPosition(startX, startY);
@@ -42,14 +50,21 @@ public class FallingObject extends GameObject {
 
         // gira em sentido horário ou anti-horário aleatoriamente
         rotationSpeed = MathUtils.randomSign() * MathUtils.random(90f, 360f);
-        objectSprite.setOriginCenter(); // permite rotação suave no centro
+        objectSprite.setOriginCenter(); // Garante que gire em torno do próprio eixo
     }
 
+    /*
+     * Executado a cada frame. Aplica as leis da física simples:
+     * - A gravidade reduz a velocidade vertical constantemente.
+     * - A posição é atualizada baseada na velocidade atual.
+     * - A rotação é aplicada.
+     * - Verifica colisão com o chão.
+     */
     @Override
     public void update(float delta) {
         if (!active) return;
 
-        // movimento parabólico
+        
         velocityY += gravity * delta;
         translate(velocityX * delta, velocityY * delta);
 
@@ -57,7 +72,7 @@ public class FallingObject extends GameObject {
         float newRotation = objectSprite.getRotation() + rotationSpeed * delta;
         objectSprite.setRotation(newRotation);
 
-        // caiu no chão desativa
+        // caiu no chão destroi
         if (objectSprite.getY() <= groundY) {
             if (!hasPlayedImpactSound && impactSound != null) {
                 float volume = 0.5f;

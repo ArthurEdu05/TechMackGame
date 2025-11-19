@@ -9,8 +9,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class Main implements ApplicationListener {
+/**
+ * Ela não contém a lógica do jogo (física, colisão) mas decide *QUAL* tela deve ser mostrada e atualizada a cada momento.
+ * Ela atua como uma "Máquina de Estados" simples:
 
+ */
+public class Main implements ApplicationListener {
+    //recursos compartilhados
     private SpriteBatch spriteBatch;
     private FitViewport viewport;
     private Menu menu;
@@ -182,7 +187,7 @@ public class Main implements ApplicationListener {
                     currentLevel = null;
 
                     gameStarted = false;
-                    menu = new Menu();      // volta ao menu inicial
+                    menu = new Menu();      
                     menu.activate();
                     menu.setSelectedLevel(0);
                     return;

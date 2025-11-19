@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+//Classe filha de level responsavel pelo level 3
 
 public class Level3 extends Level {
 
@@ -14,6 +15,7 @@ public class Level3 extends Level {
         System.out.println("Level 3 iniciado!");
     }
 
+    //ambientação
     @Override
     protected void setupBackground() {
         backgroundTexture = new Texture("backgroundlvl3.png");

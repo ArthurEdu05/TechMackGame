@@ -8,6 +8,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.Gdx;
 
+//GERENCIADOR DE TELA DE VITÓRIA
+//Similar ao GameOverManager, esta classe assume o controle quando o jogador atinge a meta (de vitória nesse caso).
+ 
+ 
 public class WinManager {
     private FitViewport viewport;
     private SpriteBatch batch;

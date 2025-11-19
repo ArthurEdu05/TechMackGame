@@ -8,6 +8,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.Gdx;
 
+
+/**
+ * Esta classe não é uma tela mas sim um gerenciador que assume o controle do Render e do Update quando o jogador perde.
+ * Parar a música do jogo e caminhão; dar feedback auditivo e visual de derrota; Detectar retorno ao menu.
+ */
 public class GameOverManager {
     private FitViewport viewport;
     private SpriteBatch batch;
@@ -22,6 +27,7 @@ public class GameOverManager {
     private boolean exitGameOver = false;
     private boolean soundPlayed = false;
 
+    //recebe todos os assets já carregados pela classe Level.
     public GameOverManager(FitViewport viewport, SpriteBatch batch, Texture gameOverBg, Texture exitButton,
                            float exitX, float exitY, float exitW, float exitH,
                            Sound gameOverSound, Music truckSound, Music introSound) {
@@ -39,19 +45,21 @@ public class GameOverManager {
         this.introSound = introSound;
     }
 
+    //Método chamado uma única vez quando a condição de derrota é atingida. Sua função é a transição de áudio: silenciar o ambiente do jogo e tocar os efeitos sonoros de derrota.
     public void triggerGameOver() {
         if (gameOver) return;
         gameOver = true;
         // parar sons de jogo
         if (truckSound != null && truckSound.isPlaying()) truckSound.stop();
         if (introSound != null && introSound.isPlaying()) introSound.stop();
-        // tocar som de game over (uma vez)
+        // tocar som de game over 
         if (gameOverSound != null && !soundPlayed) {
             gameOverSound.play(1.0f);
             soundPlayed = true;
         }
     }
 
+    //Verifica se o jogador clicou no botão de sair.
     public void update(float delta) {
         if (!gameOver) return;
 
@@ -67,7 +75,7 @@ public class GameOverManager {
 
     public void render() {
         if (!gameOver) return;
-        // desenhar tela de game over usando o sprite batch
+        // desenha tela de game over usando o sprite batch
         if (batch != null && viewport != null) {
             viewport.apply();
             batch.setProjectionMatrix(viewport.getCamera().combined);

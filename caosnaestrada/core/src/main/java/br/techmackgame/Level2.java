@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+//Classe filha de level responsavel pelo level 2
 
 public class Level2 extends Level {
 
@@ -14,6 +15,7 @@ public class Level2 extends Level {
         System.out.println("Level 2 iniciado!");
     }
 
+    //ambientação da fase 2
     @Override
     protected void setupBackground() {
         backgroundTexture = new Texture("backgroundlvl2.png");
@@ -54,6 +56,7 @@ public class Level2 extends Level {
         return 2f; // spawn mais rapido
     }
 
+    //intro da fase 2
     @Override
     protected String getIntroText() {
         return "Estamos chegando na cidade, mas seus pertences não param de cair! Não pare de recolher seus pertences e mantenha sua energia!";
