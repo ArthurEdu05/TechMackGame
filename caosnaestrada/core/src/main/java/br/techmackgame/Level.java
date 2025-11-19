@@ -86,6 +86,9 @@ public abstract class Level {
     protected Image pauseButton;
     public boolean wantsRestart = false;
     public boolean wantsReturnToMenu = false;
+    // guarda tamanho atual da janela para detectar resize
+    protected int screenWidth = 0;
+    protected int screenHeight = 0;
     
 
     
@@ -190,6 +193,9 @@ public abstract class Level {
 
         // adiciona ao stage
         uiStage.addActor(pauseButton);
+        // guarda tamanho inicial da janela
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
         // registra o stage do level como input processor por padrão
         Gdx.input.setInputProcessor(uiStage);
         // inicializa GameOverManager (não transfere propriedade das textures)
@@ -431,6 +437,19 @@ public abstract class Level {
     }
 
     public void render() {
+        // detecta se a janela mudou de tamanho e dispara resize local
+        try {
+            int w = Gdx.graphics.getWidth();
+            int h = Gdx.graphics.getHeight();
+            if (w != screenWidth || h != screenHeight) {
+                resize(w, h);
+                screenWidth = w;
+                screenHeight = h;
+            }
+        } catch (Exception e) {
+            // safe-guard: continuar render normalmente
+        }
+
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
@@ -465,6 +484,62 @@ public abstract class Level {
         }
     }
 
+    // redimensiona
+    public void resize(int width, int height) {
+        // atualiza viewport do mundo (mantém FitViewport do level)
+        try {
+            if (viewport != null) viewport.update(width, height, true);
+        } catch (Exception e) {
+            // ignore
+        }
+
+        // atualiza viewport do uiStage: primeiro ajusta worldSize para pixels
+        try {
+            if (uiStage != null && uiStage.getViewport() != null) {
+                try {
+                    uiStage.getViewport().setWorldSize(width, height);
+                } catch (Exception e) {
+                    // não suportado por alguns viewports - ignore
+                }
+                uiStage.getViewport().update(width, height, true);
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+
+        // reposiciona atores dependentes de pixels
+        try {
+            if (pauseButton != null) pauseButton.setPosition(width - 90, height - 100);
+            if (energyLabel != null) energyLabel.setPosition(10, height - 60);
+            if (scoreLabel != null) scoreLabel.setPosition(10, height - 80);
+            if (goalLabel != null) goalLabel.setPosition(10, height - 100);
+            if (introLabel != null) {
+                introLabel.setWidth(width * 0.6f);
+                introLabel.setPosition((width - introLabel.getWidth()) / 2f, height - 80);
+            }
+            if (countdownLabel != null) countdownLabel.setPosition((width - countdownLabel.getWidth()) / 2f, height / 2f);
+        } catch (Exception e) {
+            // ignore
+        }
+
+        // atualiza viewport do pauseMenu (se estiver ativo)
+        try {
+            if (pauseMenu != null) {
+                Stage pm = pauseMenu.getStage();
+                if (pm != null && pm.getViewport() != null) {
+                    try {
+                        pm.getViewport().setWorldSize(width, height);
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                    pm.getViewport().update(width, height, true);
+                }
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
     // retorna quantidade de pontos
     protected int pointsForTexture(Texture texture) {
         if (texture == null) return 1;
@@ -477,10 +552,8 @@ public abstract class Level {
         return 1;
     }
 
-    /**
-     * atualiza a pontuação adicionando o delta, usa delta negativo para penalidades
-     * centraliza efeitos colaterais
-     */
+    // atualiza a pontuação adicionando o delta, usa delta negativo para penalidades
+    // centraliza efeitos colaterais
     protected void addScore(int delta) {
         score += delta;
         if (scoreLabel != null) scoreLabel.setText("Pontuação: " + score);
