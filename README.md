@@ -30,6 +30,24 @@ O projeto conta com **3 fases progressivas**, onde a precisão e o tempo de rea�
 - **Arco Maior:** Objeto cai longe do caminhão; o jogador deve desacelerar para coletar o item no ar sem deixá-lo cair.
 - **Recarregar energia:** A energia do personagem cai progressivamente; exige esforço nas pedaladas para recarregamento da energia.
 
+## 🏆 Condições de Jogo
+
+Para avançar nas fases e completar o jogo, o jogador deve estar atento ao sistema de pontuação e às metas estabelecidas.
+
+### Sistema de Pontuação
+O jogador inicia cada nível com uma pontuação de **0 pontos**. A pontuação é dinâmica e varia de acordo com os itens:
+- **Ganho de pontos:** O jogador recebe pontos ao coletar os objetos que caem do caminhão antes que atinjam o chão.
+- **Perda de pontos:** Cada objeto que atinge o chão resulta em uma penalidade na pontuação atual.
+
+### Vitória 🥇
+Cada nível possui uma **meta de pontos específica**. 
+- Ao atingir o objetivo da fase, o jogador vence o desafio e desbloqueia o acesso ao próximo nível.
+
+### Derrota (Game Over) 🛑
+O jogo exige constância e precisão desde o primeiro segundo.
+- **Pontuação Negativa:** Caso a pontuação do jogador fique abaixo de 0 ($pontos < 0$), a partida é encerrada imediatamente e a tela de **Game Over** é exibida. 
+- Como o jogo inicia com a pontuação zerada, deixar os primeiros objetos caírem resulta em derrota instantânea, incentivando o foco imediato no exercício.
+
 ## 🛠️ Tecnologias e Ferramentas
 
 - Java & [libGDX](https://libgdx.com/)
